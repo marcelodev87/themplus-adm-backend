@@ -29,6 +29,16 @@ class EnterpriseExternalRepository
         return $this->model->find($id);
     }
 
+    public function findByCpf($cpf)
+    {
+        return $this->model->where('cpf', $cpf)->first();
+    }
+
+    public function findByCnpj($cnpj)
+    {
+        return $this->model->where('cnpj', $cnpj)->first();
+    }
+
     public function update($id, array $data)
     {
         $enterprise = $this->findById($id);
