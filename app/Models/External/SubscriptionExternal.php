@@ -10,6 +10,7 @@ class SubscriptionExternal extends Model
 {
     use HasUuid, Notifiable;
 
+    protected $connection = 'external';
     protected $table = 'subscriptions';
 
     protected $fillable = [

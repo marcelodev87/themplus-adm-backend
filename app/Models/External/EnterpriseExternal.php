@@ -11,6 +11,7 @@ class EnterpriseExternal extends Model
 {
     use HasUuid, Notifiable;
 
+    protected $connection = 'external';
     protected $table = 'enterprises';
 
     protected $fillable = [
