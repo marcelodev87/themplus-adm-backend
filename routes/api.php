@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EnterpriseController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CouponController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [UserController::class, 'login']);
@@ -21,4 +22,11 @@ Route::prefix('enterprise')->middleware('auth:sanctum')->group(function () {
     Route::put('/', [EnterpriseController::class, 'update'])->middleware('admin');
     Route::put('/coupon', [EnterpriseController::class, 'updateCoupon'])->middleware('admin');
     Route::delete('/{id}', [EnterpriseController::class, 'destroy'])->middleware('admin');
+});
+
+Route::prefix('coupon')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [CouponController::class, 'index']);
+    Route::post('/', [CouponController::class, 'store']);
+    Route::put('/', [CouponController::class, 'update'])->middleware('admin');
+    Route::delete('/{id}', [CouponController::class, 'destroy'])->middleware('admin');
 });
