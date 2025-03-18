@@ -9,3 +9,9 @@ Route::post('/reset', [UserController::class, 'reset']);
 Route::post('/verify', [UserController::class, 'verify']);
 Route::post('/newPassword', [UserController::class, 'resetPassword']);
 
+Route::prefix('user')->middleware('auth:sanctum')->group(function () {
+    Route::put('/password', [UserController::class, 'updatePassword']);
+    Route::put('/', [UserController::class, 'update']);
+});
+
+
