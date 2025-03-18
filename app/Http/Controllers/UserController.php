@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Rules\UserRule;
-use App\Services\UserService;
+use App\Services\Internal\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Internal;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,7 +18,6 @@ class User extends Authenticatable
         'password',
         'phone',
         'position',
-        'enterprise_id',
         'department_id',
         'created_by',
         'view_enterprise_id',

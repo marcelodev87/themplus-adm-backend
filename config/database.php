@@ -61,6 +61,19 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
+        'external' => [
+            'driver' => env('EXTERNAL_DB_CONNECTION', 'mysql'),
+            'host' => env('EXTERNAL_DB_HOST', '127.0.0.1'),
+            'port' => env('EXTERNAL_DB_PORT', '3306'),
+            'database' => env('EXTERNAL_DB_DATABASE', 'banco_externo'),
+            'username' => env('EXTERNAL_DB_USERNAME', 'root'),
+            'password' => env('EXTERNAL_DB_PASSWORD', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
 
         'mariadb' => [
             'driver' => 'mariadb',
@@ -147,7 +160,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
             'persistent' => env('REDIS_PERSISTENT', false),
         ],
 

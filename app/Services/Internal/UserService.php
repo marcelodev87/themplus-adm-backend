@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Internal;
 
 use App\Helpers\UserHelper;
 use App\Jobs\SendResetPasswordEmail;
 use App\Models\PasswordResetToken;
-use App\Repositories\UserRepository;
+use App\Repositories\Internal\UserRepository;
 use App\Rules\UserRule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;

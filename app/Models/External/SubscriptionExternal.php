@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\External;
 
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class PasswordResetToken extends Model
+class SubscriptionExternal extends Model
 {
     use HasUuid, Notifiable;
 
-    protected $table = 'password_reset_tokens';
+    protected $table = 'subscriptions';
 
     protected $fillable = [
-        'email',
-        'code',
+        'name',
+        'price',
     ];
 }
