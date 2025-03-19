@@ -17,18 +17,11 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
         $this->mapApiRoutes();
-        $this->mapWebRoutes();
-    }
-
-    protected function mapWebRoutes()
-    {
-        Route::namespace($this->namespace)
-            ->group(base_path('routes/web.php'));
     }
 
     protected function mapApiRoutes()
     {
-        Route::namespace($this->namespace)
+        Route::prefix('api')->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
     }
 }
