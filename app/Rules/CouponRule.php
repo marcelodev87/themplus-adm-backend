@@ -12,7 +12,7 @@ class CouponRule
         $rules = [
             'id' => 'required|string|exists:coupons,id',
             'name' => 'required|string|min:3|max:30',
-            'movements' => 'required|integer|min:31|max:999',
+            'movements' => 'required|integer|min:30|max:999',
             'allowFinancial' => 'required|integer|in:0,1',
             'allowMembers' => 'required|integer|in:0,1',
             'allowAssistantWhatsapp' => 'required|integer|in:0,1',
@@ -67,7 +67,7 @@ class CouponRule
     {
         $rules = [
             'name' => 'required|string|min:3|max:30',
-            'movements' => 'required|integer|min:31|max:999',
+            'movements' => 'required|integer|min:30|max:999',
             'allowFinancial' => 'required|integer|in:0,1',
             'allowMembers' => 'required|integer|in:0,1',
             'allowAssistantWhatsapp' => 'required|integer|in:0,1',
