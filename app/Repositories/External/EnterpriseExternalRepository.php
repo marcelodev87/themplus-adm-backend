@@ -16,7 +16,7 @@ class EnterpriseExternalRepository
 
     public function getAll()
     {
-        return $this->model->with('subscription')->all();
+        return $this->model->with('subscription')->get();
     }
 
     public function findByIdWithRelations($id)

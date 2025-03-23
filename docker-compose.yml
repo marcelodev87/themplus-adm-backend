@@ -21,7 +21,7 @@ services:
             - '.:/var/www/html'
             - "./xdebug.ini:/etc/php/8.3/cli/conf.d/20-xdebug.ini"
         networks:
-            - sail
+            - themplus-network
         depends_on:
             - mysql
     mysql:
@@ -29,8 +29,6 @@ services:
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ROOT_HOST: '%'
             MYSQL_DATABASE: '${DB_DATABASE}'
             MYSQL_USER: '${DB_USERNAME}'
             MYSQL_PASSWORD: '${DB_PASSWORD}'
@@ -39,7 +37,7 @@ services:
             - 'sail-mysql:/var/lib/mysql'
             - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
-            - sail
+            - themplus-network
         healthcheck:
             test:
                 - CMD
@@ -49,8 +47,9 @@ services:
             retries: 3
             timeout: 5s
 networks:
-    sail:
+    themplus-network:
         driver: bridge
+        external: true
 volumes:
     sail-mysql:
         driver: local

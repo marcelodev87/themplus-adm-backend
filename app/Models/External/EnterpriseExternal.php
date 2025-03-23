@@ -36,7 +36,7 @@ class EnterpriseExternal extends Model
 
     public function subscription()
     {
-        return $this->hasOne(SubscriptionExternal::class, 'subscription_id');
+        return $this->belongsTo(SubscriptionExternal::class, 'subscription_id');
     }
 
 }
