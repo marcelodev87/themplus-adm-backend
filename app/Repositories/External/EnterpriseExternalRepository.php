@@ -16,7 +16,7 @@ class EnterpriseExternalRepository
 
     public function getAll()
     {
-        return $this->model->with('subscription')
+        return $this->model->with(['subscription', 'coupon'])
             ->orderBy('created_by', 'desc')
             ->get();
     }

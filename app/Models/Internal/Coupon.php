@@ -10,6 +10,8 @@ class Coupon extends Model
 {
     use HasUuid, Notifiable;
 
+    protected $connection = 'mysql';
+
     protected $table = 'coupons';
 
     protected $fillable = [

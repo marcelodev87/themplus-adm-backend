@@ -3,6 +3,7 @@
 namespace App\Models\External;
 
 use App\Models\External\SubscriptionExternal;
+use App\Models\Internal\Coupon;
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -37,6 +38,10 @@ class EnterpriseExternal extends Model
     public function subscription()
     {
         return $this->belongsTo(SubscriptionExternal::class, 'subscription_id');
+    }
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class, 'coupon_id');
     }
 
 }
