@@ -2,7 +2,6 @@
 
 namespace App\Models\External;
 
-use App\Models\External\SubscriptionExternal;
 use App\Models\Internal\Coupon;
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +12,7 @@ class EnterpriseExternal extends Model
     use HasUuid, Notifiable;
 
     protected $connection = 'external';
+
     protected $table = 'enterprises';
 
     protected $fillable = [
@@ -32,16 +32,17 @@ class EnterpriseExternal extends Model
         'created_by',
         'position',
         'counter_enterprise_id',
-        'code_financial'
+        'code_financial',
+        'coupon_id',
     ];
 
     public function subscription()
     {
         return $this->belongsTo(SubscriptionExternal::class, 'subscription_id');
     }
+
     public function coupon()
     {
         return $this->belongsTo(Coupon::class, 'coupon_id');
     }
-
 }

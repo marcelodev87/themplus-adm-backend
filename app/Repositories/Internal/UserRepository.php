@@ -94,6 +94,7 @@ class UserRepository
 
         return null;
     }
+
     public function updateDepartment($departmentId)
     {
         $this->model->where('department_id', $departmentId)->update(['department_id' => null]);
@@ -104,8 +105,10 @@ class UserRepository
         $user = $this->findById($id);
         if ($user) {
             DB::table('registers')->where('user_id', $id)->delete();
+
             return $user->delete();
         }
+
         return false;
     }
 }

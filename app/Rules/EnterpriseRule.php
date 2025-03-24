@@ -36,17 +36,18 @@ class EnterpriseRule
     public function updateCoupon($request)
     {
         $rules = [
-            'id' => 'required|string|max:100',
-            'coupon_id' => 'required|string|min:3|max:80',
+            'enterpriseId' => 'required|string|max:100',
+            'couponId' => 'nullable|string|min:3|max:80|exists:coupons,id',
         ];
 
         $messages = [
-            'id.required' => 'O ID da organização é obrigatório',
-            'id.string' => 'O ID da organização deve ser uma string',
-            'id.max' => 'O ID da organização não pode ter mais de 100 caracteres',
-            'coupon_id.required' => 'O ID do cupom é obrigatório',
-            'coupon_id.string' => 'O ID do cupom deve ser uma string',
-            'coupon_id.max' => 'O ID do cupom não pode ter mais de 100 caracteres',
+            'enterpriseId.required' => 'O ID da organização é obrigatório',
+            'enterpriseId.string' => 'O ID da organização deve ser uma string',
+            'enterpriseId.max' => 'O ID da organização não pode ter mais de 100 caracteres',
+            'couponId.required' => 'O ID do cupom é obrigatório',
+            'couponId.string' => 'O ID do cupom deve ser uma string',
+            'couponId.max' => 'O ID do cupom não pode ter mais de 100 caracteres',
+            'couponId.exists' => 'O ID do cupom não existe',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);

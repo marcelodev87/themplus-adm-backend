@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Internal\User;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class CreateUserAdminSeeder extends Seeder
@@ -14,7 +14,7 @@ class CreateUserAdminSeeder extends Seeder
             'name' => 'Super ADM',
             'email' => 'superadm@adm.com',
             'position' => 'admin',
-            'password' => Hash::make('123456789')
+            'password' => Hash::make('123456789'),
         ]);
     }
 }

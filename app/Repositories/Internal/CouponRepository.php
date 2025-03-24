@@ -24,7 +24,6 @@ class CouponRepository
         return $this->model->find($id);
     }
 
-
     public function update($id, array $data)
     {
         $coupon = $this->findById($id);
@@ -47,8 +46,10 @@ class CouponRepository
         $coupon = $this->findById($id);
         if ($coupon) {
             DB::connection('external')->table('enterprises')->where('coupon_id', $id)->delete();
+
             return $coupon->delete();
         }
+
         return false;
     }
 }

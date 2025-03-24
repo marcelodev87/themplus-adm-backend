@@ -21,7 +21,6 @@ class Coupon extends Model
         'allow_members',
         'allow_assistant_whatsapp',
         'discount',
-        'date_expires'
+        'date_expires',
     ];
-
 }

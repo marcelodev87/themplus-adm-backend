@@ -33,7 +33,7 @@ class EnterpriseController
                 'enterprises' => $enterprises,
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar todas as filiais: ' . $e->getMessage());
+            Log::error('Erro ao buscar todas as filiais: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -47,7 +47,7 @@ class EnterpriseController
 
             return response()->json(['enterprise' => $enterprise], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar dados da organização: ' . $e->getMessage());
+            Log::error('Erro ao buscar dados da organização: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -61,6 +61,7 @@ class EnterpriseController
 
             if ($enterprise) {
                 DB::commit();
+
                 return response()->json(['enterprise' => $enterprise, 'message' => 'Organização atualizada com sucesso'], 200);
             }
 
@@ -68,7 +69,7 @@ class EnterpriseController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao atualizar organização: ' . $e->getMessage());
+            Log::error('Erro ao atualizar organização: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -82,14 +83,17 @@ class EnterpriseController
 
             if ($enterprise) {
                 DB::commit();
-                return response()->json(['enterprise' => $enterprise, 'message' => 'Organização atualizada com sucesso'], 200);
+
+                $enterprises = $this->repository->getAll();
+
+                return response()->json(['enterprises' => $enterprises, 'message' => 'Vínculo com cupom atualizado com sucesso'], 200);
             }
 
-            throw new \Exception('Falha ao atualizar organização');
+            throw new \Exception('Falha ao vincular cupom a organização');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao atualizar organização: ' . $e->getMessage());
+            Log::error('Erro ao vincular cupom a organização: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -113,7 +117,7 @@ class EnterpriseController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao deletar organização: ' . $e->getMessage());
+            Log::error('Erro ao deletar organização: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

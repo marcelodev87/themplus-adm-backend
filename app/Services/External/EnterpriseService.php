@@ -43,7 +43,7 @@ class EnterpriseService
             'number_address' => $request->input('number_address'),
             'complement' => $request->input('complement'),
             'phone' => $request->input('phone'),
-            'code_financial' => $request->input('code_financial')
+            'code_financial' => $request->input('code_financial'),
         ];
 
         return $this->repository->update($request->input('id'), $data);
@@ -53,6 +53,6 @@ class EnterpriseService
     {
         $this->rule->updateCoupon($request);
 
-        return $this->repository->update($request->input('id'), ['coupon_id', $request->input('coupon_id')]);
+        return $this->repository->update($request->input('enterpriseId'), ['coupon_id' => $request->input('couponId')]);
     }
 }
