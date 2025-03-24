@@ -16,7 +16,9 @@ class EnterpriseExternalRepository
 
     public function getAll()
     {
-        return $this->model->with('subscription')->get();
+        return $this->model->with('subscription')
+            ->orderBy('created_by', 'desc')
+            ->get();
     }
 
     public function findByIdWithRelations($id)

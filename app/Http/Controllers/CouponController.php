@@ -44,9 +44,9 @@ class CouponController
             $data = [
                 'name' => $request->input('name'),
                 'movements' => $request->input('movements'),
-                'allow_financial' => $request->input('allow_financial'),
-                'allow_members' => $request->input('allow_members'),
-                'allowAssistantWhatsapp' => $request->input('allow_assistant_whatsapp'),
+                'allow_financial' => $request->input('allowFinancial'),
+                'allow_members' => $request->input('allowMembers'),
+                'allow_assistant_whatsapp' => $request->input('allowAssistantWhatsapp'),
                 'discount' => $request->input('discount'),
                 'date_expires' => $request->input('dateExpires'),
             ];
@@ -54,7 +54,8 @@ class CouponController
 
             if ($coupon) {
                 DB::commit();
-                return response()->json(['coupon' => $coupon, 'message' => 'Cupom criado com sucesso'], 200);
+                $coupons = $this->repository->getAll();
+                return response()->json(['coupons' => $coupons, 'message' => 'Cupom criado com sucesso'], 200);
             }
         } catch (\Exception $e) {
             Log::error('Erro ao criar cupom: ' . $e->getMessage());
