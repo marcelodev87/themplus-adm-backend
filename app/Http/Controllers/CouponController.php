@@ -7,6 +7,7 @@ use App\Rules\CouponRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Http\Resources\CouponResource;
 
 class CouponController
 {
@@ -26,7 +27,7 @@ class CouponController
             $coupons = $this->repository->getAll();
 
             return response()->json([
-                'coupons' => $coupons,
+                'coupons' => CouponResource::collection($coupons),
             ], 200);
         } catch (\Exception $e) {
             Log::error('Erro ao buscar todas os cupons: ' . $e->getMessage());
@@ -55,7 +56,7 @@ class CouponController
             if ($coupon) {
                 DB::commit();
                 $coupons = $this->repository->getAll();
-                return response()->json(['coupons' => $coupons, 'message' => 'Cupom criado com sucesso'], 200);
+                return response()->json(['coupons' => CouponResource::collection($coupons), 'message' => 'Cupom criado com sucesso'], 200);
             }
         } catch (\Exception $e) {
             Log::error('Erro ao criar cupom: ' . $e->getMessage());

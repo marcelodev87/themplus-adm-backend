@@ -10,7 +10,11 @@ class CouponResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $total = DB::connection('external')->table('enterprises')->where('coupon_id')->count();
+        $total = DB::connection('external')
+            ->table('enterprises')
+            ->where('coupon_id', $this->id)
+            ->count();
+
         return [
             'id' => $this->id,
             'name' => $this->name,
