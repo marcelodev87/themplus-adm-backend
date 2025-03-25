@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\EnterpriseController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,4 +30,8 @@ Route::prefix('coupon')->middleware('auth:sanctum')->group(function () {
     Route::post('/', [CouponController::class, 'store']);
     Route::put('/', [CouponController::class, 'update'])->middleware('admin');
     Route::delete('/{id}', [CouponController::class, 'destroy'])->middleware('admin');
+});
+
+Route::prefix('member')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [MemberController::class, 'index']);
 });

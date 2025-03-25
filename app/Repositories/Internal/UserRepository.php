@@ -14,6 +14,11 @@ class UserRepository
         $this->model = $user;
     }
 
+    public function getAll()
+    {
+        return $this->model->all();
+    }
+
     public function getAllByEnterprise($enterpriseId)
     {
         return $this->model->where('enterprise_id', $enterpriseId)->get();

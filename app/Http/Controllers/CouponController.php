@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CouponResource;
+use App\Http\Resources\Internal\CouponResource;
 use App\Repositories\Internal\CouponRepository;
 use App\Rules\CouponRule;
 use Illuminate\Http\Request;
@@ -30,7 +30,7 @@ class CouponController
                 'coupons' => CouponResource::collection($coupons),
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar todas os cupons: '.$e->getMessage());
+            Log::error('Erro ao buscar todas os cupons: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -60,7 +60,7 @@ class CouponController
                 return response()->json(['coupons' => CouponResource::collection($coupons), 'message' => 'Cupom criado com sucesso'], 200);
             }
         } catch (\Exception $e) {
-            Log::error('Erro ao criar cupom: '.$e->getMessage());
+            Log::error('Erro ao criar cupom: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -89,7 +89,7 @@ class CouponController
                 return response()->json(['coupon' => $coupon, 'message' => 'Cupom atualizado com sucesso'], 200);
             }
         } catch (\Exception $e) {
-            Log::error('Erro ao atualizar cupom: '.$e->getMessage());
+            Log::error('Erro ao atualizar cupom: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -113,7 +113,7 @@ class CouponController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao deletar cupom: '.$e->getMessage());
+            Log::error('Erro ao deletar cupom: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
