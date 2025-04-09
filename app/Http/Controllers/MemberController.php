@@ -43,7 +43,7 @@ class MemberController
         try {
             $user = $this->repository->findById($id);
 
-            return response()->json(['user' => $user], 200);
+            return response()->json(['user' => MemberResource::collection($user)], 200);
         } catch (\Exception $e) {
             Log::error('Erro ao buscar dados do usuário: ' . $e->getMessage());
 
