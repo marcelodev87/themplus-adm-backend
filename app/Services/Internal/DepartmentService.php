@@ -27,13 +27,11 @@ class DepartmentService
         DepartmentHelper::existsDepartment(
             null,
             $request->input('name'),
-            $request->user()->enterprise_id,
             'create'
         );
 
         $data = $request->only(['name']);
         $data['parent_id'] = $request->input('parentId') ?? null;
-        $data['enterprise_id'] = $request->user()->enterprise_id;
 
         return $this->repository->create($data);
     }
@@ -45,7 +43,6 @@ class DepartmentService
         DepartmentHelper::existsDepartment(
             $request->input('id'),
             $request->input('name'),
-            $request->user()->enterprise_id,
             'update'
         );
 

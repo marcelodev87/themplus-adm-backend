@@ -9,12 +9,12 @@ use App\Repositories\Internal\UserRepository;
 
 class DepartmentHelper
 {
-    public static function existsDepartment($id, $name, $enterpriseId, $mode)
+    public static function existsDepartment($id, $name, $mode)
     {
         $userRepository = new UserRepository(new User);
         $departmentRepository = new DepartmentRepository(new Department, $userRepository);
 
-        $department = $departmentRepository->findByName($name, $enterpriseId);
+        $department = $departmentRepository->findByName($name);
         if ($mode === 'create') {
             if ($department) {
                 throw new \Exception('Já existe um departamento igual ou parecido');

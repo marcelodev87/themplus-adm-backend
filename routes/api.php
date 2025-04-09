@@ -37,7 +37,7 @@ Route::prefix('member')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [MemberController::class, 'index']);
 });
 
-Route::prefix('department')->middleware(['auth:sanctum', 'token.expiration'])->group(function () {
+Route::prefix('department')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [DepartmentController::class, 'index']);
     Route::post('/', [DepartmentController::class, 'store'])->middleware('admin');
     Route::put('/', [DepartmentController::class, 'update'])->middleware('admin');

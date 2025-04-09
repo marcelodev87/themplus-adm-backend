@@ -32,11 +32,10 @@ class DepartmentRepository
         return $this->model->find($id);
     }
 
-    public function findByName($name, $enterpriseId)
+    public function findByName($name)
     {
         return $this->model
             ->where(DB::raw('LOWER(name)'), '=', strtolower($name))
-            ->where('enterprise_id', $enterpriseId)
             ->first();
     }
 
