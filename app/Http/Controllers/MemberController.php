@@ -6,6 +6,8 @@ use App\Http\Resources\Internal\MemberResource;
 use App\Repositories\Internal\UserRepository;
 use App\Rules\UserRule;
 use App\Services\Internal\UserService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class MemberController
@@ -32,7 +34,7 @@ class MemberController
                 'users' => MemberResource::collection($users),
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar todas os membros de sua organização: ' . $e->getMessage());
+            Log::error('Erro ao buscar todas os membros de sua organização: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -45,51 +47,35 @@ class MemberController
 
             return response()->json(['user' => MemberResource::collection($user)], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar dados do usuário: ' . $e->getMessage());
+            Log::error('Erro ao buscar dados do usuário: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
-    // public function store(Request $request)
-    // {
-    //     try {
-    //         DB::beginTransaction();
+    public function store(Request $request)
+    {
+        try {
+            DB::beginTransaction();
 
-    //         $user = $this->service->include($request);
-    //         $register = RegisterHelper::create(
-    //             $request->user()->id,
-    //             $request->user()->enterprise_id,
-    //             'created',
-    //             'member',
-    //             "{$user->name}|{$user->email}"
-    //         );
+            $user = $this->service->include($request);
 
-    //         if ($user && $register) {
-    //             DB::commit();
-    //             $dataNotification = [
-    //                 'user_id' => $user->id,
-    //                 'enterprise_id' => $user->enterprise_id,
-    //                 'title' => 'Boas vindas ao Themplus',
-    //                 'text' => 'Seja bem-vindo ao Themplus! Você acaba de dar o primeiro passo para gerenciar melhor suas movimentações e simplificar a burocracia da sua contabilidade de modo mais fácil. Estamos aqui para ajudar você a ter uma experiência mais organizada e eficiente. Aproveite todos os recursos que preparamos para otimizar a sua gestão!',
-    //             ];
-    //             $this->notificationRepository->createForUser($dataNotification);
+            if ($user) {
+                DB::commit();
+                $users = $this->repository->getAll();
 
-    //             $enterpriseId = $request->user()->enterprise_id !== $request->user()->view_enterprise_id ? $request->user()->view_enterprise_id : $request->user()->enterprise_id;
-    //             $users = $this->repository->getAllByEnterpriseWithRelations($enterpriseId);
+                return response()->json(['users' => MemberResource::collection($users), 'message' => 'Membro adicionado á sua organização com sucesso'], 201);
+            }
 
-    //             return response()->json(['users' => UserResource::collection($users), 'message' => 'Membro adicionado á sua organização com sucesso'], 201);
-    //         }
+            throw new \Exception('Falha ao criar membro da organização');
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-    //         throw new \Exception('Falha ao criar membro da organização');
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
+            Log::error('Erro ao registrar membro da organização: '.$e->getMessage());
 
-    //         Log::error('Erro ao registrar membro da organização: ' . $e->getMessage());
-
-    //         return response()->json(['message' => $e->getMessage()], 500);
-    //     }
-    // }
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
 
     // public function update(Request $request)
     // {
@@ -158,36 +144,27 @@ class MemberController
     //     }
     // }
 
-    // public function destroy(Request $request, string $id)
-    // {
-    //     try {
-    //         DB::beginTransaction();
+    public function destroy($id)
+    {
+        try {
+            DB::beginTransaction();
 
-    //         $this->rule->delete($id);
-    //         $memberDelete = $this->repository->findById($id);
-    //         $member = $this->repository->delete($id);
+            $this->rule->delete($id);
+            $member = $this->repository->delete($id);
 
-    //         $register = RegisterHelper::create(
-    //             $request->user()->id,
-    //             $request->user()->enterprise_id,
-    //             'deleted',
-    //             'member',
-    //             "{$memberDelete->name}|{$memberDelete->email}"
-    //         );
+            if ($member) {
+                DB::commit();
 
-    //         if ($member && $register) {
-    //             DB::commit();
+                return response()->json(['message' => 'Membro deletado com sucesso'], 200);
+            }
 
-    //             return response()->json(['message' => 'Membro deletado com sucesso'], 200);
-    //         }
+            throw new \Exception('Falha ao deletar membro');
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-    //         throw new \Exception('Falha ao deletar membro');
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
+            Log::error('Erro ao deletar membro: '.$e->getMessage());
 
-    //         Log::error('Erro ao deletar membro: ' . $e->getMessage());
-
-    //         return response()->json(['message' => $e->getMessage()], 500);
-    //     }
-    // }
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
 }

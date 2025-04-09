@@ -108,14 +108,7 @@ class UserService
         $data = $request->only(['name', 'email', 'position', 'phone']);
         $data['password'] = Hash::make($request->input('password'));
         $data['department_id'] = $request->input('department');
-        $user = $request->user();
-
-        $data['enterprise_id'] = $user->enterprise_id !== $user->view_enterprise_id
-            ? $user->view_enterprise_id
-            : $user->enterprise_id;
-
-        $data['view_enterprise_id'] = $data['enterprise_id'];
-        $data['created_by'] = $user->id;
+        $data['created_by'] = $request->user()->id;
 
         return $this->repository->create($data);
     }

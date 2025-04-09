@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EnterpriseController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
@@ -34,4 +35,11 @@ Route::prefix('coupon')->middleware('auth:sanctum')->group(function () {
 
 Route::prefix('member')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [MemberController::class, 'index']);
+});
+
+Route::prefix('department')->middleware(['auth:sanctum', 'token.expiration'])->group(function () {
+    Route::get('/', [DepartmentController::class, 'index']);
+    Route::post('/', [DepartmentController::class, 'store'])->middleware('admin');
+    Route::put('/', [DepartmentController::class, 'update'])->middleware('admin');
+    Route::delete('/{id}', [DepartmentController::class, 'destroy'])->middleware('admin');
 });

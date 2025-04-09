@@ -9,16 +9,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->uuid('department_id')->nullable()->after('password');
-            $table->foreign('department_id')->references('id')->on('departments');
+            $table->boolean('active')->default(1);
+            $table->string('created_by')->nullable();
         });
     }
 
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['department_id']);
-            $table->dropColumn('department_id');
+            $table->dropColumn('active');
         });
     }
 };
