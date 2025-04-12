@@ -35,6 +35,11 @@ Route::prefix('coupon')->middleware('auth:sanctum')->group(function () {
 
 Route::prefix('member')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [MemberController::class, 'index']);
+    Route::get('/find/{id}', [MemberController::class, 'show']);
+    Route::post('/', [MemberController::class, 'store'])->middleware('admin');
+    Route::put('/active', [MemberController::class, 'active'])->middleware('admin');
+    Route::put('/', [MemberController::class, 'update'])->middleware('admin');
+    Route::delete('/{id}', [MemberController::class, 'destroy'])->middleware('admin');
 });
 
 Route::prefix('department')->middleware(['auth:sanctum'])->group(function () {

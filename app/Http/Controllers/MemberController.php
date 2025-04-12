@@ -34,7 +34,7 @@ class MemberController
                 'users' => MemberResource::collection($users),
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar todas os membros de sua organização: '.$e->getMessage());
+            Log::error('Erro ao buscar todas os membros de sua organização: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -47,7 +47,7 @@ class MemberController
 
             return response()->json(['user' => MemberResource::collection($user)], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar dados do usuário: '.$e->getMessage());
+            Log::error('Erro ao buscar dados do usuário: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -71,78 +71,61 @@ class MemberController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao registrar membro da organização: '.$e->getMessage());
+            Log::error('Erro ao registrar membro da organização: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
-    // public function update(Request $request)
-    // {
-    //     try {
-    //         DB::beginTransaction();
-    //         $member = $this->repository->findById($request->input('id'));
-    //         $user = $this->service->updateMember($request);
-    //         $register = RegisterHelper::create(
-    //             $request->user()->id,
-    //             $request->user()->enterprise_id,
-    //             'updated',
-    //             'member',
-    //             "{$member->name}|{$member->email}"
-    //         );
+    public function update(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $user = $this->service->updateMember($request);
 
-    //         if ($user && $register) {
-    //             DB::commit();
+            if ($user) {
+                DB::commit();
 
-    //             $enterpriseId = $request->user()->enterprise_id !== $request->user()->view_enterprise_id ? $request->user()->view_enterprise_id : $request->user()->enterprise_id;
-    //             $users = $this->repository->getAllByEnterpriseWithRelations($enterpriseId);
+                $users = $this->repository->getAll();
 
-    //             return response()->json(['users' => UserResource::collection($users), 'message' => 'Dados do membro foram atualizados com sucesso'], 200);
-    //         }
+                return response()->json(['users' => MemberResource::collection($users), 'message' => 'Dados do membro foram atualizados com sucesso'], 200);
+            }
 
-    //         throw new \Exception('Falha ao atualizar dados do membro');
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
+            throw new \Exception('Falha ao atualizar dados do membro');
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-    //         Log::error('Erro ao atualizar dados do membro: ' . $e->getMessage());
+            Log::error('Erro ao atualizar dados do membro: ' . $e->getMessage());
 
-    //         return response()->json(['message' => $e->getMessage()], 500);
-    //     }
-    // }
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
 
-    // public function active(Request $request)
-    // {
-    //     try {
-    //         DB::beginTransaction();
-    //         $member = $this->repository->update($request->input('userId'), ['active' => $request->input('active')]);
+    public function active(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $member = $this->repository->update($request->input('userId'), ['active' => $request->input('active')]);
 
-    //         $register = RegisterHelper::create(
-    //             $request->user()->id,
-    //             $request->user()->enterprise_id,
-    //             $request->input('active') === 1 ? 'reactivated' : 'inactivated',
-    //             'member',
-    //             "{$member->name}|{$member->email}"
-    //         );
-    //         if ($member && $register) {
-    //             DB::commit();
+            if ($member) {
+                DB::commit();
 
-    //             $enterpriseId = $request->user()->enterprise_id !== $request->user()->view_enterprise_id ? $request->user()->view_enterprise_id : $request->user()->enterprise_id;
-    //             $users = $this->repository->getAllByEnterpriseWithRelations($enterpriseId);
+                $users = $this->repository->getAll();
 
-    //             $message = $request->input('active') == 0 ? 'Usuário inativado com sucesso' : 'Usuário ativado com sucesso';
+                $message = $request->input('active') == 0 ? 'Usuário inativado com sucesso' : 'Usuário ativado com sucesso';
 
-    //             return response()->json(['users' => UserResource::collection($users), 'message' => $message], 200);
-    //         }
+                return response()->json(['users' => MemberResource::collection($users), 'message' => $message], 200);
+            }
 
-    //         throw new \Exception('Falha ao atualizar dados do membro');
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
+            throw new \Exception('Falha ao atualizar dados do membro');
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-    //         Log::error('Erro ao atualizar dados do membro: ' . $e->getMessage());
+            Log::error('Erro ao atualizar dados do membro: ' . $e->getMessage());
 
-    //         return response()->json(['message' => $e->getMessage()], 500);
-    //     }
-    // }
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
 
     public function destroy($id)
     {
@@ -162,7 +145,7 @@ class MemberController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao deletar membro: '.$e->getMessage());
+            Log::error('Erro ao deletar membro: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

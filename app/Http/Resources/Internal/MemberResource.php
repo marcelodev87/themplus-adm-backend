@@ -17,6 +17,7 @@ class MemberResource extends JsonResource
             'active' => $this->active,
             'created_by' => $this->created_by,
             'department_id' => $this->department_id,
+            'department' => $this->department,
             'created_at' => $this->created_at,
         ];
     }

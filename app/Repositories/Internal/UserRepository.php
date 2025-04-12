@@ -16,7 +16,7 @@ class UserRepository
 
     public function getAll()
     {
-        return $this->model->all();
+        return $this->model->with('department')->get();
     }
 
     public function getAllByEnterprise($enterpriseId)
@@ -109,8 +109,6 @@ class UserRepository
     {
         $user = $this->findById($id);
         if ($user) {
-            DB::table('registers')->where('user_id', $id)->delete();
-
             return $user->delete();
         }
 
