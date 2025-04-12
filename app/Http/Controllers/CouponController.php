@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Internal\Coupon\CouponShowResource;
-use App\Http\Resources\Internal\CouponResource;
+use App\Http\Resources\Internal\Coupon\CouponTableResource;
 use App\Models\Internal\Coupon;
 use App\Repositories\Internal\CouponRepository;
 use App\Rules\CouponRule;
@@ -29,7 +29,7 @@ class CouponController
             $coupons = $this->repository->getAll();
 
             return response()->json([
-                'coupons' => CouponResource::collection($coupons),
+                'coupons' => CouponTableResource::collection($coupons),
             ], 200);
         } catch (\Exception $e) {
             Log::error('Erro ao buscar todas os cupons: '.$e->getMessage());
@@ -84,7 +84,7 @@ class CouponController
                 DB::commit();
                 $coupons = $this->repository->getAll();
 
-                return response()->json(['coupons' => CouponResource::collection($coupons), 'message' => 'Cupom criado com sucesso'], 200);
+                return response()->json(['coupons' => CouponTableResource::collection($coupons), 'message' => 'Cupom criado com sucesso'], 200);
             }
         } catch (\Exception $e) {
             Log::error('Erro ao criar cupom: '.$e->getMessage());
@@ -122,7 +122,9 @@ class CouponController
             if ($coupon) {
                 DB::commit();
 
-                return response()->json(['coupon' => $coupon, 'message' => 'Cupom atualizado com sucesso'], 200);
+                $coupons = $this->repository->getAll();
+
+                return response()->json(['coupons' => CouponTableResource::collection($coupons), 'message' => 'Cupom atualizado com sucesso'], 200);
             }
         } catch (\Exception $e) {
             Log::error('Erro ao atualizar cupom: '.$e->getMessage());

@@ -14,6 +14,7 @@ class CouponShowResource extends JsonResource
             'name' => $this->name,
             'type' => $this->type,
             'service' => $this->service,
+            'discount' => $this->discount,
             'subscription_id' => $this->subscription_id,
             'date_expiration' => $this->date_expiration,
             'created_at' => $this->created_at,

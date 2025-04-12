@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Resources\Internal;
+namespace App\Http\Resources\Internal\Coupon;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 
-class CouponResource extends JsonResource
+class CouponTableResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
@@ -18,6 +18,7 @@ class CouponResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'type' => $this->service,
             'date_expiration' => $this->date_expiration,
             'created_at' => $this->created_at,
             'using' => $total,
