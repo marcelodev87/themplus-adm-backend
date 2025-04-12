@@ -49,3 +49,8 @@ Route::prefix('department')->middleware(['auth:sanctum'])->group(function () {
     Route::put('/', [DepartmentController::class, 'update'])->middleware('admin');
     Route::delete('/{id}', [DepartmentController::class, 'destroy'])->middleware('admin');
 });
+
+Route::prefix('subscription')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/', [DepartmentController::class, 'index']);
+    Route::put('/', [DepartmentController::class, 'update'])->middleware('admin');
+});

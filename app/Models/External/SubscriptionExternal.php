@@ -15,7 +15,6 @@ class SubscriptionExternal extends Model
     protected $table = 'subscriptions';
 
     protected $fillable = [
-        'name',
         'price',
     ];
 }
