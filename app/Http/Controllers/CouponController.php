@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Internal\Coupon\CouponShowResource;
 use App\Http\Resources\Internal\CouponResource;
+use App\Models\Internal\Coupon;
 use App\Repositories\Internal\CouponRepository;
 use App\Rules\CouponRule;
 use Illuminate\Http\Request;
@@ -36,6 +38,19 @@ class CouponController
         }
     }
 
+    public function show(Coupon $id)
+    {
+        try {
+            return response()->json([
+                'coupon' => new CouponShowResource($id),
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Erro ao buscar cupom '.$e->getMessage());
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
     public function store(Request $request)
     {
         try {
@@ -44,12 +59,25 @@ class CouponController
 
             $data = [
                 'name' => $request->input('name'),
-                'type' => $request->input('movements'),
-                'resource' => $request->input('resource'),
-                'subscription_id' => $request->input('subscription'),
+                'type' => $request->input('type'),
+                'service' => $request->input('service'),
+                'subscription_id' => null,
                 'discount' => $request->input('discount'),
-                'date_expires' => $request->input('dateExpires'),
+                'date_expiration' => $request->input('dateExpiration'),
             ];
+
+            if ($request->input('type') === 'subscription') {
+                $subscription = DB::connection('external')
+                    ->table('subscriptions')
+                    ->where('name', $request->input('subscription'))
+                    ->first();
+
+                if (! $subscription) {
+                    throw new \Exception('Assinatura não encontrada.');
+                }
+
+                $data['subscription_id'] = $subscription->id;
+            }
             $coupon = $this->repository->create($data);
 
             if ($coupon) {
@@ -73,12 +101,22 @@ class CouponController
 
             $data = [
                 'name' => $request->input('name'),
-                'type' => $request->input('movements'),
-                'resource' => $request->input('resource'),
-                'subscription_id' => $request->input('subscription'),
+                'type' => $request->input('type'),
+                'service' => $request->input('service'),
+                'subscription_id' => null,
                 'discount' => $request->input('discount'),
-                'date_expires' => $request->input('dateExpires'),
+                'date_expiration' => $request->input('dateExpiration'),
             ];
+
+            if ($request->input('type') === 'subscription') {
+                $subscription = DB::connection('external')
+                    ->table('subscriptions')
+                    ->where('name', $request->input('subscription'))
+                    ->first();
+
+                $data['subscription_id'] = $subscription->id;
+            }
+
             $coupon = $this->repository->update($request->input('id'), $data);
 
             if ($coupon) {

@@ -17,7 +17,7 @@ class Coupon extends Model
     protected $fillable = [
         'name',
         'type',
-        'resource',
+        'service',
         'subscription_id',
         'discount',
         'date_expiration',

@@ -14,7 +14,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('type');
-            $table->string('resource')->nullable();
+            $table->string('service')->nullable();
             $table->string('subscription_id')->nullable();
             $table->integer('discount');
             $table->string('date_expiration')->nullable();
