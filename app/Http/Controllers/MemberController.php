@@ -34,7 +34,7 @@ class MemberController
                 'users' => MemberResource::collection($users),
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar todas os membros de sua organização: ' . $e->getMessage());
+            Log::error('Erro ao buscar todas os membros de sua organização: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -47,7 +47,7 @@ class MemberController
 
             return response()->json(['user' => MemberResource::collection($user)], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar dados do usuário: ' . $e->getMessage());
+            Log::error('Erro ao buscar dados do usuário: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -71,7 +71,7 @@ class MemberController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao registrar membro da organização: ' . $e->getMessage());
+            Log::error('Erro ao registrar membro da organização: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -95,7 +95,7 @@ class MemberController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao atualizar dados do membro: ' . $e->getMessage());
+            Log::error('Erro ao atualizar dados do membro: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -121,7 +121,7 @@ class MemberController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao atualizar dados do membro: ' . $e->getMessage());
+            Log::error('Erro ao atualizar dados do membro: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -145,7 +145,7 @@ class MemberController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao deletar membro: ' . $e->getMessage());
+            Log::error('Erro ao deletar membro: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

@@ -44,10 +44,9 @@ class CouponController
 
             $data = [
                 'name' => $request->input('name'),
-                'movements' => $request->input('movements'),
-                'allow_financial' => $request->input('allowFinancial'),
-                'allow_members' => $request->input('allowMembers'),
-                'allow_assistant_whatsapp' => $request->input('allowAssistantWhatsapp'),
+                'type' => $request->input('movements'),
+                'resource' => $request->input('resource'),
+                'subscription_id' => $request->input('subscription'),
                 'discount' => $request->input('discount'),
                 'date_expires' => $request->input('dateExpires'),
             ];
@@ -74,10 +73,9 @@ class CouponController
 
             $data = [
                 'name' => $request->input('name'),
-                'movements' => $request->input('movements'),
-                'allow_financial' => $request->input('allow_financial'),
-                'allow_members' => $request->input('allow_members'),
-                'allow_assistant_whatsapp' => $request->input('allow_assistant_whatsapp'),
+                'type' => $request->input('movements'),
+                'resource' => $request->input('resource'),
+                'subscription_id' => $request->input('subscription'),
                 'discount' => $request->input('discount'),
                 'date_expires' => $request->input('dateExpires'),
             ];
