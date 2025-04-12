@@ -4,6 +4,7 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EnterpriseController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +52,6 @@ Route::prefix('department')->middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::prefix('subscription')->middleware(['auth:sanctum'])->group(function () {
-    Route::get('/', [DepartmentController::class, 'index']);
-    Route::put('/', [DepartmentController::class, 'update'])->middleware('admin');
+    Route::get('/', [SubscriptionController::class, 'index']);
+    Route::put('/', [SubscriptionController::class, 'update'])->middleware('admin');
 });
