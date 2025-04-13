@@ -22,7 +22,7 @@ class Coupon extends Model
         'discount',
         'date_expiration',
         'limit',
-        'code',
+        'description',
         'active',
 
     ];
