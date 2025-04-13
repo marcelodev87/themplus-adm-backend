@@ -6,24 +6,16 @@ use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Coupon extends Model
+class Service extends Model
 {
     use HasUuid, Notifiable;
 
     protected $connection = 'mysql';
 
-    protected $table = 'coupons';
+    protected $table = 'services';
 
     protected $fillable = [
         'name',
-        'type',
-        'service_id',
-        'subscription_id',
-        'discount',
-        'date_expiration',
-        'limit',
-        'code',
-        'active',
-
+        'code_service',
     ];
 }

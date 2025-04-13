@@ -51,7 +51,8 @@ class CouponRule
     {
         $rules = [
             'name' => 'required|string|min:3|max:30',
-            'type' => 'required|string',
+            'code' => 'required|string|min:3|max:30',
+            'type' => 'required|string|in:subscription,service',
             'service' => 'nullable|required_if:type,service|string',
             'subscription' => 'nullable|required_if:type,subscription|string',
             'discount' => 'nullable|integer|min:1|max:100',
@@ -63,8 +64,13 @@ class CouponRule
             'name.string' => 'O nome deve ser uma string.',
             'name.min' => 'O nome deve ter no mínimo 3 caracteres.',
             'name.max' => 'O nome deve ter no máximo 30 caracteres.',
+            'code.required' => 'O código do cupom é obrigatório.',
+            'code.string' => 'O código do cupom deve ser uma string.',
+            'code.min' => 'O código do cupom deve ter no mínimo 3 caracteres.',
+            'code.max' => 'O código do cupom deve ter no máximo 30 caracteres.',
             'type.required' => 'O tipo de cupom é obrigatório.',
             'type.string' => 'O tipo de cupom deve ser uma string.',
+            'type.in' => 'O tipo de cupom deve ser "subscription" ou "service".',
             'service.required_if' => 'O campo "service" é obrigatório quando o tipo de cupom for "service".',
             'service.string' => 'O campo "service" deve ser uma string.',
             'subscription.required_if' => 'O campo "subscription" é obrigatório quando o tipo de cupom for "subscription".',

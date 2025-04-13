@@ -32,7 +32,7 @@ class CouponController
                 'coupons' => CouponTableResource::collection($coupons),
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar todas os cupons: '.$e->getMessage());
+            Log::error('Erro ao buscar todas os cupons: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -45,7 +45,7 @@ class CouponController
                 'coupon' => new CouponShowResource($id),
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar cupom '.$e->getMessage());
+            Log::error('Erro ao buscar cupom ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -59,6 +59,7 @@ class CouponController
 
             $data = [
                 'name' => $request->input('name'),
+                'code' => $request->input('code'),
                 'type' => $request->input('type'),
                 'service' => $request->input('service'),
                 'subscription_id' => null,
@@ -73,7 +74,7 @@ class CouponController
                     ->where('name', $request->input('subscription'))
                     ->first();
 
-                if (! $subscription) {
+                if (!$subscription) {
                     throw new \Exception('Assinatura não encontrada.');
                 }
 
@@ -88,7 +89,7 @@ class CouponController
                 return response()->json(['coupons' => CouponTableResource::collection($coupons), 'message' => 'Cupom criado com sucesso'], 200);
             }
         } catch (\Exception $e) {
-            Log::error('Erro ao criar cupom: '.$e->getMessage());
+            Log::error('Erro ao criar cupom: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -129,7 +130,7 @@ class CouponController
                 return response()->json(['coupons' => CouponTableResource::collection($coupons), 'message' => 'Cupom atualizado com sucesso'], 200);
             }
         } catch (\Exception $e) {
-            Log::error('Erro ao atualizar cupom: '.$e->getMessage());
+            Log::error('Erro ao atualizar cupom: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -153,7 +154,7 @@ class CouponController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao deletar cupom: '.$e->getMessage());
+            Log::error('Erro ao deletar cupom: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
