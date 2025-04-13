@@ -45,7 +45,7 @@ class CouponRepository
     {
         $coupon = $this->findById($id);
         if ($coupon) {
-            DB::connection('external')->table('enterprises')->where('coupon_id', $id)->delete();
+            DB::connection('external')->table('enterprise_has_coupons')->where('id', $id)->delete();
 
             return $coupon->delete();
         }

@@ -21,5 +21,6 @@ class Coupon extends Model
         'subscription_id',
         'discount',
         'date_expiration',
+        'limit',
     ];
 }

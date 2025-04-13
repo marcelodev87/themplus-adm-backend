@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('service')->nullable();
             $table->string('subscription_id')->nullable();
             $table->integer('discount');
+            $table->integer('limit')->nullable();
             $table->string('date_expiration')->nullable();
             $table->timestamps();
         });

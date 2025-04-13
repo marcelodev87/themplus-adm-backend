@@ -11,7 +11,7 @@ class CouponTableResource extends JsonResource
     public function toArray(Request $request): array
     {
         $total = DB::connection('external')
-            ->table('enterprises')
+            ->table('enterprise_has_coupons')
             ->where('coupon_id', $this->id)
             ->count();
 
@@ -21,6 +21,7 @@ class CouponTableResource extends JsonResource
             'type' => $this->service,
             'date_expiration' => $this->date_expiration,
             'created_at' => $this->created_at,
+            'limit' => $this->limit,
             'using' => $total,
         ];
     }

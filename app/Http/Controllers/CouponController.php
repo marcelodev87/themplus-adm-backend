@@ -64,6 +64,7 @@ class CouponController
                 'subscription_id' => null,
                 'discount' => $request->input('discount'),
                 'date_expiration' => $request->input('dateExpiration'),
+                'limit' => $request->input('limit'),
             ];
 
             if ($request->input('type') === 'subscription') {
@@ -106,6 +107,7 @@ class CouponController
                 'subscription_id' => null,
                 'discount' => $request->input('discount'),
                 'date_expiration' => $request->input('dateExpiration'),
+                'limit' => $request->input('limit'),
             ];
 
             if ($request->input('type') === 'subscription') {
