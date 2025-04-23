@@ -32,7 +32,7 @@ class CouponController
                 'coupons' => CouponTableResource::collection($coupons),
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar todas os cupons: ' . $e->getMessage());
+            Log::error('Erro ao buscar todas os cupons: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -45,7 +45,7 @@ class CouponController
                 'coupon' => new CouponShowResource($id),
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar cupom ' . $e->getMessage());
+            Log::error('Erro ao buscar cupom '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -61,7 +61,7 @@ class CouponController
             $subscription = null;
 
             if ($request->input('type') === 'service') {
-                $result = DB::table('service')->where('code_service', $request->input('service'))->first();
+                $result = DB::table('services')->where('code_service', $request->input('service'))->first();
                 $service = $result->id;
             } else {
                 $subscription = $request->input('subscription');
@@ -88,7 +88,7 @@ class CouponController
                 return response()->json(['coupons' => CouponTableResource::collection($coupons), 'message' => 'Cupom criado com sucesso'], 200);
             }
         } catch (\Exception $e) {
-            Log::error('Erro ao criar cupom: ' . $e->getMessage());
+            Log::error('Erro ao criar cupom: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -102,22 +102,9 @@ class CouponController
 
             $data = [
                 'name' => $request->input('name'),
-                'type' => $request->input('type'),
-                'service' => $request->input('service'),
-                'subscription_id' => null,
-                'discount' => $request->input('discount'),
-                'date_expiration' => $request->input('dateExpiration'),
+                'description' => $request->input('description'),
                 'limit' => $request->input('limit'),
             ];
-
-            if ($request->input('type') === 'subscription') {
-                $subscription = DB::connection('external')
-                    ->table('subscriptions')
-                    ->where('name', $request->input('subscription'))
-                    ->first();
-
-                $data['subscription_id'] = $subscription->id;
-            }
 
             $coupon = $this->repository->update($request->input('id'), $data);
 
@@ -129,7 +116,7 @@ class CouponController
                 return response()->json(['coupons' => CouponTableResource::collection($coupons), 'message' => 'Cupom atualizado com sucesso'], 200);
             }
         } catch (\Exception $e) {
-            Log::error('Erro ao atualizar cupom: ' . $e->getMessage());
+            Log::error('Erro ao atualizar cupom: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -153,7 +140,7 @@ class CouponController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao deletar cupom: ' . $e->getMessage());
+            Log::error('Erro ao deletar cupom: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

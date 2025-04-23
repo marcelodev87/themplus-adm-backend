@@ -12,11 +12,7 @@ class CouponRule
         $rules = [
             'id' => 'required|string|exists:coupons,id',
             'name' => 'required|string|min:3|max:30',
-            'type' => 'required|string|in:subscription,service',
-            'service' => 'required_if:type,service|string',
-            'subscription' => 'required_if:type,subscription|string',
-            'discount' => 'nullable|integer|min:1|max:100',
-            'dateExpires' => 'nullable|date_format:d/m/Y',
+
         ];
 
         $messages = [
@@ -27,15 +23,6 @@ class CouponRule
             'name.string' => 'O nome deve ser uma string.',
             'name.min' => 'O nome deve ter no mínimo 3 caracteres.',
             'name.max' => 'O nome deve ter no máximo 30 caracteres.',
-            'type.required' => 'O tipo de cupom é obrigatório.',
-            'type.string' => 'O tipo de cupom deve ser uma string.',
-            'type.in' => 'O tipo de cupom deve ser "subscription" ou "service".',
-            'service.required_if' => 'O campo "service" é obrigatório quando o tipo for "service".',
-            'subscription.required_if' => 'O campo "subscription" é obrigatório quando o tipo for "subscription".',
-            'discount.integer' => 'O desconto deve ser um número inteiro.',
-            'discount.min' => 'O desconto deve ser no mínimo 1.',
-            'discount.max' => 'O desconto deve ser no máximo 100.',
-            'dateExpires.date_format' => 'A data de expiração deve estar no formato dd/mm/yyyy.',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);

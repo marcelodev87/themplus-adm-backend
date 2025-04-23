@@ -18,12 +18,13 @@ class CouponTableResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'type' => $this->service,
+            'type' => $this->type,
             'date_expiration' => $this->date_expiration,
             'created_at' => $this->created_at,
             'limit' => $this->limit,
             'using' => $total,
             'active' => $this->active,
+            'code' => $this->code,
         ];
     }
 }

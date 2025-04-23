@@ -17,5 +17,4 @@ class ServiceRepository
     {
         return $this->model->orderBy('name', 'asc')->get();
     }
-
 }
