@@ -28,7 +28,7 @@ class SubscriptionController
 
             return response()->json(['subscriptions' => SubscriptionTableResource::collection($subscriptions)], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar todas as assinatuuras: '.$e->getMessage());
+            Log::error('Erro ao buscar todas as assinaturas: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -75,7 +75,7 @@ class SubscriptionController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao atualizar assinatura: '.$e->getMessage());
+            Log::error('Erro ao atualizar assinatura: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

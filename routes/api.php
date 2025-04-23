@@ -6,6 +6,7 @@ use App\Http\Controllers\EnterpriseController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [UserController::class, 'login']);
@@ -54,4 +55,8 @@ Route::prefix('department')->middleware(['auth:sanctum'])->group(function () {
 Route::prefix('subscription')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [SubscriptionController::class, 'index']);
     Route::put('/', [SubscriptionController::class, 'update'])->middleware('admin');
+});
+
+Route::prefix('service')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/', [ServiceController::class, 'index']);
 });

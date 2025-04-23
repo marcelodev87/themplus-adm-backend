@@ -24,6 +24,7 @@ class Coupon extends Model
         'limit',
         'description',
         'active',
+        'code'
 
     ];
 }

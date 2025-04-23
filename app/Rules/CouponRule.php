@@ -51,7 +51,7 @@ class CouponRule
     {
         $rules = [
             'name' => 'required|string|min:3|max:30',
-            'code' => 'required|string|min:3|max:30',
+            'code' => 'required|string|min:6|max:30',
             'type' => 'required|string|in:subscription,service',
             'service' => 'nullable|required_if:type,service|string',
             'subscription' => 'nullable|required_if:type,subscription|string',
@@ -62,7 +62,7 @@ class CouponRule
         $messages = [
             'name.required' => 'O nome é obrigatório.',
             'name.string' => 'O nome deve ser uma string.',
-            'name.min' => 'O nome deve ter no mínimo 3 caracteres.',
+            'name.min' => 'O nome deve ter no mínimo 6 caracteres.',
             'name.max' => 'O nome deve ter no máximo 30 caracteres.',
             'code.required' => 'O código do cupom é obrigatório.',
             'code.string' => 'O código do cupom deve ser uma string.',
