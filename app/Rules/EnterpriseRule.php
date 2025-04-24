@@ -33,7 +33,7 @@ class EnterpriseRule
         return true;
     }
 
-    public function updateCoupon($request)
+    public function setCoupon($request)
     {
         $rules = [
             'enterpriseId' => 'required|string|max:100',
@@ -88,6 +88,26 @@ class EnterpriseRule
         $messages = [
             'id.required' => 'O ID da organização é obrigatória',
             'id.string' => 'O ID da organização deve ser uma string',
+        ];
+
+        $validator = Validator::make(['id' => $id], $rules, $messages);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator, response()->json(['errors' => $validator->errors()], 422));
+        }
+
+        return true;
+    }
+
+    public function destroyCouponByEnterprise($id)
+    {
+        $rules = [
+            'id' => 'required|string',
+        ];
+
+        $messages = [
+            'id.required' => 'O ID do vínculo de cupom é obrigatória',
+            'id.string' => 'O ID do vínculo de cupom deve ser uma string',
         ];
 
         $validator = Validator::make(['id' => $id], $rules, $messages);

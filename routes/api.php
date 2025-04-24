@@ -23,9 +23,11 @@ Route::prefix('user')->middleware('auth:sanctum')->group(function () {
 Route::prefix('enterprise')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [EnterpriseController::class, 'index']);
     Route::get('/{id}', [EnterpriseController::class, 'show']);
+    Route::get('/{id}/coupons', [EnterpriseController::class, 'getCouponsInEnterprise']);
     Route::put('/', [EnterpriseController::class, 'update'])->middleware('admin');
-    Route::put('/coupon', [EnterpriseController::class, 'updateCoupon'])->middleware('admin');
+    Route::post('/coupon', [EnterpriseController::class, 'setCoupon'])->middleware('admin');
     Route::delete('/{id}', [EnterpriseController::class, 'destroy'])->middleware('admin');
+    Route::delete('/{id}/coupon', [EnterpriseController::class, 'destroyCouponByEnterprise'])->middleware('admin');
 });
 
 Route::prefix('coupon')->middleware('auth:sanctum')->group(function () {

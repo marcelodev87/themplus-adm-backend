@@ -9,9 +9,12 @@ class EnterpriseExternalRepository
 {
     protected $model;
 
-    public function __construct(EnterpriseExternal $enterprise)
+    protected $enterpriseHasCouponExternalRepository;
+
+    public function __construct(EnterpriseExternal $enterprise, EnterpriseHasCouponExternalRepository $enterpriseHasCouponExternalRepository)
     {
         $this->model = $enterprise;
+        $this->enterpriseHasCouponExternalRepository = $enterpriseHasCouponExternalRepository;
     }
 
     public function getAll()
@@ -51,6 +54,16 @@ class EnterpriseExternalRepository
         }
 
         return null;
+    }
+
+    public function setCoupon($enterpriseId, $couponId)
+    {
+        $data = [
+            'enterprise_id' => $enterpriseId,
+            'coupon_id' => $couponId,
+        ];
+
+        return $this->enterpriseHasCouponExternalRepository->create($data);
     }
 
     public function delete($id)
@@ -99,5 +112,14 @@ class EnterpriseExternalRepository
         }
 
         return false;
+    }
+
+    public function destroyCouponByEnterprise($id)
+    {
+        $deletedRows = DB::connection('external')->table('enterprise_has_coupons')
+            ->where('id', $id)
+            ->delete();
+
+        return $deletedRows > 0;
     }
 }

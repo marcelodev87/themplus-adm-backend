@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Internal\Coupon\CouponEnterpriseResource;
 use App\Repositories\External\EnterpriseExternalRepository;
+use App\Repositories\External\EnterpriseHasCouponExternalRepository;
 use App\Rules\EnterpriseRule;
 use App\Services\External\EnterpriseService;
 use Illuminate\Http\Request;
@@ -15,13 +17,16 @@ class EnterpriseController
 
     private $repository;
 
+    private $enterpriseHasCouponExternalRepository;
+
     private $rule;
 
-    public function __construct(EnterpriseService $service, EnterpriseExternalRepository $repository, EnterpriseRule $rule)
+    public function __construct(EnterpriseService $service, EnterpriseExternalRepository $repository, EnterpriseRule $rule, EnterpriseHasCouponExternalRepository $enterpriseHasCouponExternalRepository)
     {
         $this->service = $service;
         $this->repository = $repository;
         $this->rule = $rule;
+        $this->enterpriseHasCouponExternalRepository = $enterpriseHasCouponExternalRepository;
     }
 
     public function index()
@@ -53,6 +58,21 @@ class EnterpriseController
         }
     }
 
+    public function getCouponsInEnterprise($id)
+    {
+        try {
+            $this->rule->show($id);
+            $coupons = $this->enterpriseHasCouponExternalRepository->getCouponsByEnterprise($id);
+
+            // return response()->json(['coupons' => $coupons], 200);
+            return response()->json(['coupons' => CouponEnterpriseResource::collection($coupons)], 200);
+        } catch (\Exception $e) {
+            Log::error('Erro ao buscar cupons da organização: '.$e->getMessage());
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
     public function update(Request $request)
     {
         try {
@@ -75,18 +95,18 @@ class EnterpriseController
         }
     }
 
-    public function updateCoupon(Request $request)
+    public function setCoupon(Request $request)
     {
         try {
             DB::beginTransaction();
-            $enterprise = $this->service->updateCoupon($request);
+            $coupon = $this->service->setCoupon($request);
 
-            if ($enterprise) {
+            if ($coupon) {
                 DB::commit();
 
-                $enterprises = $this->repository->getAll();
+                $coupons = $this->enterpriseHasCouponExternalRepository->getCouponsByEnterprise($request->input('enterprise_id'));
 
-                return response()->json(['enterprises' => $enterprises, 'message' => 'Vínculo com cupom atualizado com sucesso'], 200);
+                return response()->json(['coupons' => CouponEnterpriseResource::collection($coupons), 'message' => 'Vínculo com cupom atualizado com sucesso'], 200);
             }
 
             throw new \Exception('Falha ao vincular cupom a organização');
@@ -94,6 +114,30 @@ class EnterpriseController
             DB::rollBack();
 
             Log::error('Erro ao vincular cupom a organização: '.$e->getMessage());
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function destroyCouponByEnterprise($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $this->rule->destroyCouponByEnterprise($id);
+            $coupon = $this->repository->destroyCouponByEnterprise($id);
+
+            if ($coupon) {
+                DB::commit();
+
+                return response()->json(['message' => 'Cupom deletado da organização com sucesso'], 200);
+            }
+
+            throw new \Exception('Falha ao deletar cupom da organização');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error('Erro ao deletar cupom da organização: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

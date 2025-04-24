@@ -49,10 +49,10 @@ class EnterpriseService
         return $this->repository->update($request->input('id'), $data);
     }
 
-    public function updateCoupon($request)
+    public function setCoupon($request)
     {
-        $this->rule->updateCoupon($request);
+        $this->rule->setCoupon($request);
 
-        return $this->repository->update($request->input('enterpriseId'), ['coupon_id' => $request->input('couponId')]);
+        return $this->repository->setCoupon($request->input('enterpriseId'), $request->input('couponId'));
     }
 }
