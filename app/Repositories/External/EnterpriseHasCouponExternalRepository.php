@@ -2,6 +2,7 @@
 
 namespace App\Repositories\External;
 
+use App\Helpers\CouponHelper;
 use App\Models\External\EnterpriseHasCouponExternal;
 
 class EnterpriseHasCouponExternalRepository
@@ -20,6 +21,8 @@ class EnterpriseHasCouponExternalRepository
 
     public function create(array $data)
     {
+        CouponHelper::replaceCoupon($data['enterprise_id'], $data['coupon_id']);
+
         return $this->model->create($data);
     }
 

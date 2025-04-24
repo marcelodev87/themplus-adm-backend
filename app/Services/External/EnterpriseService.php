@@ -2,6 +2,7 @@
 
 namespace App\Services\External;
 
+use App\Helpers\CouponHelper;
 use App\Helpers\EnterpriseHelper;
 use App\Repositories\External\EnterpriseExternalRepository;
 use App\Rules\EnterpriseRule;
@@ -52,6 +53,7 @@ class EnterpriseService
     public function setCoupon($request)
     {
         $this->rule->setCoupon($request);
+        CouponHelper::validate($request->input('enterpriseId'), $request->input('couponId'));
 
         return $this->repository->setCoupon($request->input('enterpriseId'), $request->input('couponId'));
     }

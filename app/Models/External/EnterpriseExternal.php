@@ -41,8 +41,8 @@ class EnterpriseExternal extends Model
         return $this->belongsTo(SubscriptionExternal::class, 'subscription_id');
     }
 
-    public function coupon()
+    public function coupons()
     {
-        return $this->belongsTo(Coupon::class, 'coupon_id');
+        return $this->hasMany(EnterpriseHasCouponExternal::class, 'enterprise_id');
     }
 }
