@@ -27,5 +27,4 @@ class UserExternalRepository
     {
         return $this->model->create($data);
     }
-
 }

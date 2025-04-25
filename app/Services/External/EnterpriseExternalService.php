@@ -7,8 +7,8 @@ use App\Helpers\CouponHelper;
 use App\Helpers\EnterpriseHelper;
 use App\Repositories\External\AccountExternalRepository;
 use App\Repositories\External\EnterpriseExternalRepository;
-use App\Repositories\External\SubscriptionExternalRepository;
 use App\Repositories\External\SettingsCounterExternalRepository;
+use App\Repositories\External\SubscriptionExternalRepository;
 use App\Repositories\External\UserExternalRepository;
 use App\Rules\EnterpriseRule;
 use Illuminate\Support\Facades\Hash;
@@ -24,6 +24,7 @@ class EnterpriseExternalService
     protected $accountExternalRepository;
 
     protected $settingsCounterExternalRepository;
+
     protected $userExternalRepository;
 
     public function __construct(
@@ -65,6 +66,7 @@ class EnterpriseExternalService
 
         return $this->repository->create($data);
     }
+
     private function createUser($enterpriseId, $request)
     {
 
@@ -74,7 +76,7 @@ class EnterpriseExternalService
             'position' => 'admin',
             'enterprise_id' => $enterpriseId,
             'view_enterprise_id' => $enterpriseId,
-            'password' => Hash::make($request->input('user.password'))
+            'password' => Hash::make($request->input('user.password')),
 
         ];
 
@@ -109,9 +111,8 @@ class EnterpriseExternalService
 
     public function update($request)
     {
-        $this->rule->update($request);
-
         $enterprise = $this->repository->findById($request->input('id'));
+
         if (($request->input('cpf') && $request->input('cpf') !== $enterprise->cpf) || $request->input('cnpj') && $request->input('cnpj') !== $enterprise->cnpj) {
             EnterpriseHelper::existsEnterpriseCpfOrCnpj($request);
         }
