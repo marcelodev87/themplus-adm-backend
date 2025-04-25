@@ -39,8 +39,8 @@ class EnterpriseExternalService
         $this->repository = $repository;
         $this->subscriptionExternalRepository = $subscriptionExternalRepository;
         $this->accountExternalRepository = $accountExternalRepository;
-        $this->$settingsCounterExternalRepository = $settingsCounterExternalRepository;
-        $this->$userExternalRepository = $userExternalRepository;
+        $this->settingsCounterExternalRepository = $settingsCounterExternalRepository;
+        $this->userExternalRepository = $userExternalRepository;
     }
 
     private function createEnterprise($request)

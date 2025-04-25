@@ -38,7 +38,7 @@ class EnterpriseController
                 'enterprises' => $enterprises,
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar todas as filiais: '.$e->getMessage());
+            Log::error('Erro ao buscar todas as filiais: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -52,7 +52,7 @@ class EnterpriseController
 
             return response()->json(['enterprise' => $enterprise], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar dados da organização: '.$e->getMessage());
+            Log::error('Erro ao buscar dados da organização: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -66,7 +66,7 @@ class EnterpriseController
 
             return response()->json(['coupons' => CouponEnterpriseResource::collection($coupons)], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar cupons da organização: '.$e->getMessage());
+            Log::error('Erro ao buscar cupons da organização: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -88,7 +88,7 @@ class EnterpriseController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao registrar organização: '.$e->getMessage());
+            Log::error('Erro ao registrar organização: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -110,7 +110,7 @@ class EnterpriseController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao atualizar organização: '.$e->getMessage());
+            Log::error('Erro ao atualizar organização: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -134,7 +134,7 @@ class EnterpriseController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao vincular cupom a organização: '.$e->getMessage());
+            Log::error('Erro ao vincular cupom a organização: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -158,7 +158,7 @@ class EnterpriseController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao deletar cupom da organização: '.$e->getMessage());
+            Log::error('Erro ao deletar cupom da organização: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -182,7 +182,7 @@ class EnterpriseController
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Erro ao deletar organização: '.$e->getMessage());
+            Log::error('Erro ao deletar organização: ' . $e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
