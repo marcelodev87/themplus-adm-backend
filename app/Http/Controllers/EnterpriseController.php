@@ -81,7 +81,8 @@ class EnterpriseController
             if ($enteprise) {
                 DB::commit();
 
-                return response()->json(['message' => 'Organização cadastrada com sucesso'], 201);
+                $enterprises = $this->repository->getAll();
+                return response()->json(['enterprises' => $enterprises, 'message' => 'Organização cadastrada com sucesso'], 201);
             }
 
             throw new \Exception('Falha ao criar organização');
