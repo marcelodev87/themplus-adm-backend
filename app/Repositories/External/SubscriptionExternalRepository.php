@@ -23,6 +23,11 @@ class SubscriptionExternalRepository
         return $this->model->find($id);
     }
 
+    public function findByName($name)
+    {
+        return $this->model->where('name', $name)->first();
+    }
+
     public function update($id, array $data)
     {
         $subscription = $this->findById($id);

@@ -2,7 +2,6 @@
 
 namespace App\Models\External;
 
-use App\Models\Internal\Coupon;
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;

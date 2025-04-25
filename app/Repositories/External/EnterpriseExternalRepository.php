@@ -44,6 +44,11 @@ class EnterpriseExternalRepository
         return $this->model->where('cnpj', $cnpj)->first();
     }
 
+    public function create($data)
+    {
+        return $this->model->create($data);
+    }
+
     public function update($id, array $data)
     {
         $enterprise = $this->findById($id);

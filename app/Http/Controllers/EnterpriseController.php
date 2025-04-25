@@ -6,7 +6,7 @@ use App\Http\Resources\Internal\Coupon\CouponEnterpriseResource;
 use App\Repositories\External\EnterpriseExternalRepository;
 use App\Repositories\External\EnterpriseHasCouponExternalRepository;
 use App\Rules\EnterpriseRule;
-use App\Services\External\EnterpriseService;
+use App\Services\External\EnterpriseExternalService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +21,7 @@ class EnterpriseController
 
     private $rule;
 
-    public function __construct(EnterpriseService $service, EnterpriseExternalRepository $repository, EnterpriseRule $rule, EnterpriseHasCouponExternalRepository $enterpriseHasCouponExternalRepository)
+    public function __construct(EnterpriseExternalService $service, EnterpriseExternalRepository $repository, EnterpriseRule $rule, EnterpriseHasCouponExternalRepository $enterpriseHasCouponExternalRepository)
     {
         $this->service = $service;
         $this->repository = $repository;
@@ -64,10 +64,31 @@ class EnterpriseController
             $this->rule->show($id);
             $coupons = $this->enterpriseHasCouponExternalRepository->getCouponsByEnterprise($id);
 
-            // return response()->json(['coupons' => $coupons], 200);
             return response()->json(['coupons' => CouponEnterpriseResource::collection($coupons)], 200);
         } catch (\Exception $e) {
             Log::error('Erro ao buscar cupons da organização: '.$e->getMessage());
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $enteprise = $this->service->create($request);
+
+            if ($enteprise) {
+                DB::commit();
+
+                return response()->json(['message' => 'Organização cadastrada com sucesso'], 201);
+            }
+
+            throw new \Exception('Falha ao criar organização');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error('Erro ao registrar organização: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
