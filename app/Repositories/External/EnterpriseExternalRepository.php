@@ -4,6 +4,7 @@ namespace App\Repositories\External;
 
 use App\Models\External\EnterpriseExternal;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EnterpriseExternalRepository
 {
@@ -79,8 +80,39 @@ class EnterpriseExternalRepository
             $offices = DB::connection('external')->table('enterprises')->where('created_by', $enterprise->id)->get();
 
             foreach ($offices as $office) {
+
+                $movements = DB::connection('external')->table('movements')
+                    ->where('enterprise_id', $office->id)
+                    ->get();
+                foreach ($movements as $movement) {
+                    if ($movement->receipt) {
+                        $oldFilePath = str_replace(env('AWS_URL') . '/', '', $movement->receipt);
+                        Storage::disk('s3')->delete($oldFilePath);
+                    }
+                }
                 DB::connection('external')->table('movements')->where('enterprise_id', $office->id)->delete();
-                DB::connection('external')->table('schedulings')->where('enterprise_id', $office->id)->delete();
+
+                $schedulings = DB::connection('external')->table('schedulings')
+                    ->where('enterprise_id', $office->id)
+                    ->get();
+                foreach ($schedulings as $scheduling) {
+                    if ($scheduling->receipt) {
+                        $oldFilePath = str_replace(env('AWS_URL') . '/', '', $scheduling->receipt);
+                        Storage::disk('s3')->delete($oldFilePath);
+                    }
+                }
+                DB::connection('external')->table('schedulings')
+                    ->where('enterprise_id', $office->id)
+                    ->delete();
+                
+                $financial_receipts = DB::connection('external')->table('financial_movements_receipts')->where('enterprise_id', $office->id)->get();
+                foreach ($financial_receipts as $fr) {
+                    if ($fr->receipt) {
+                        $oldFilePath = str_replace(env('AWS_URL').'/', '', $fr->receipt);
+                        Storage::disk('s3')->delete($oldFilePath);
+                    }
+                }
+
                 DB::connection('external')->table('accounts')->where('enterprise_id', $office->id)->delete();
                 DB::connection('external')->table('categories')->where('enterprise_id', $office->id)->delete();
                 DB::connection('external')->table('users')->where('enterprise_id', $office->id)
@@ -97,8 +129,37 @@ class EnterpriseExternalRepository
                 DB::connection('external')->table('enterprises')->where('id', $office->id)->delete();
             }
 
+            $movements = DB::connection('external')->table('movements')
+                ->where('enterprise_id', $id)
+                ->get();
+            foreach ($movements as $movement) {
+                if ($movement->receipt) {
+                    $oldFilePath = str_replace(env('AWS_URL') . '/', '', $movement->receipt);
+                    Storage::disk('s3')->delete($oldFilePath);
+                }
+            }
             DB::connection('external')->table('movements')->where('enterprise_id', $id)->delete();
-            DB::connection('external')->table('schedulings')->where('enterprise_id', $id)->delete();
+
+            $schedulings = DB::connection('external')->table('schedulings')
+                ->where('enterprise_id', $id)
+                ->get();
+            foreach ($schedulings as $scheduling) {
+                if ($scheduling->receipt) {
+                    $oldFilePath = str_replace(env('AWS_URL') . '/', '', $scheduling->receipt);
+                    Storage::disk('s3')->delete($oldFilePath);
+                }
+            }
+            DB::connection('external')->table('schedulings')
+                ->where('enterprise_id', $id)
+                ->delete();
+            
+            $financial_receipts = DB::connection('external')->table('financial_movements_receipts')->where('enterprise_id', $id)->get();
+            foreach ($financial_receipts as $fr) {
+                if ($fr->receipt) {
+                    $oldFilePath = str_replace(env('AWS_URL').'/', '', $fr->receipt);
+                    Storage::disk('s3')->delete($oldFilePath);
+                }
+            }
             DB::connection('external')->table('accounts')->where('enterprise_id', $id)->delete();
             DB::connection('external')->table('categories')->where('enterprise_id', $id)->delete();
             DB::connection('external')->table('users')->where('enterprise_id', $id)
