@@ -23,6 +23,7 @@ Route::prefix('user')->middleware('auth:sanctum')->group(function () {
 Route::prefix('enterprise')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [EnterpriseController::class, 'index']);
     Route::get('/{id}', [EnterpriseController::class, 'show']);
+    Route::get('/members/{id}',[EnterpriseController::class, 'getMembersByEnterprise']);
     Route::get('/{id}/coupons', [EnterpriseController::class, 'getCouponsInEnterprise']);
     Route::put('/', [EnterpriseController::class, 'update'])->middleware('admin');
     Route::post('/', [EnterpriseController::class, 'store'])->middleware('admin');

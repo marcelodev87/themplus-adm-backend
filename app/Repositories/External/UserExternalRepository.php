@@ -18,6 +18,11 @@ class UserExternalRepository
         return $this->model->all();
     }
 
+    public function getMembersByEnterprise($id)
+    {
+        return $this->model->where('enterprise_id', $id)->get();
+    }
+
     public function findById($id)
     {
         return $this->model->find($id);
