@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Internal\MemberResource;
+use App\Repositories\External\UserExternalRepository;
 use App\Repositories\Internal\UserRepository;
 use App\Rules\UserRule;
+use App\Services\External\UserExternalService;
 use App\Services\Internal\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,13 +18,25 @@ class MemberController
 
     private $repository;
 
+    private $userExternalRepository;
+
     private $rule;
 
-    public function __construct(UserService $service, UserRepository $repository, UserRule $rule)
+    private $userExternalService;
+
+    public function __construct(
+        UserService $service,
+        UserRepository $repository,
+        UserRule $rule,
+        UserExternalRepository $userExternalRepository,
+        UserExternalService $userExternalService,
+        )
     {
         $this->service = $service;
         $this->repository = $repository;
         $this->rule = $rule;
+        $this->userExternalRepository = $userExternalRepository;
+        $this->userExternalService = $userExternalService;
     }
 
     public function index()
@@ -97,6 +111,29 @@ class MemberController
 
             Log::error('Erro ao atualizar dados do membro: '.$e->getMessage());
 
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function updateMemberUser(Request $request)
+    {
+        try {
+            // $member = $this->userExternalService->updateMemberUser($request);
+            // if($member){
+            //     return response()->json(['member' => MemberResource::collection($member), 'message' => 'Dados do membro foram atualizados com sucesso'], 200);
+            // }
+            // throw new \Exception('Falha ao atualizar dados do membro');
+
+            DB::beginTransaction();
+            $member = $this->userExternalService->updateMemberUser($request);
+            if($member){
+                $memberUpdate = $this->userExternalRepository->updateMemberUser($member->id, $member);
+                return response()->json(['member' => MemberResource::collection($memberUpdate), 'message' => 'Dados do membro foram atualizados com sucesso'], 200);
+            }
+            throw new \Exception('Falha ao atualizar dados do membro');
+
+        } catch (\Exception $e) {
+            Log::error('Erro ao atualizar dados do membro: '.$e->getMessage());
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }

@@ -23,6 +23,15 @@ class UserExternalRepository
         return $this->model->where('enterprise_id', $id)->get();
     }
 
+    public function updateMemberUser($id, array $data)
+    {
+        $member = $this->findById($id);
+        if($member){
+            $member->update($data);
+        }
+        return $member;
+    }
+
     public function findById($id)
     {
         return $this->model->find($id);
