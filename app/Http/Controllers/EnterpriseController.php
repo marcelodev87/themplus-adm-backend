@@ -18,17 +18,17 @@ class EnterpriseController
 
     private $repository;
 
-    private $userRepository;
+    private $userExternalRepository;
 
     private $enterpriseHasCouponExternalRepository;
 
     private $rule;
 
-    public function __construct(EnterpriseExternalService $service, EnterpriseExternalRepository $repository, EnterpriseRule $rule, EnterpriseHasCouponExternalRepository $enterpriseHasCouponExternalRepository, UserExternalRepository $userRepository)
+    public function __construct(EnterpriseExternalService $service, EnterpriseExternalRepository $repository, EnterpriseRule $rule, EnterpriseHasCouponExternalRepository $enterpriseHasCouponExternalRepository, UserExternalRepository $userExternalRepository)
     {
         $this->service = $service;
         $this->repository = $repository;
-        $this->userRepository = $userRepository;
+        $this->userExternalRepository = $userExternalRepository;
         $this->rule = $rule;
         $this->enterpriseHasCouponExternalRepository = $enterpriseHasCouponExternalRepository;
     }
@@ -65,7 +65,8 @@ class EnterpriseController
     public function getMembersByEnterprise($id)
     {
         try {
-            $members = $this->userRepository->getMembersByEnterprise($id);
+            $members = $this->userExternalRepository->getMembersByEnterprise($id);
+
             return response()->json([
                 'members' => $members,
             ], 200);

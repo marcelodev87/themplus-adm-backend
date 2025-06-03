@@ -7,14 +7,12 @@ use Illuminate\Validation\ValidationException;
 
 class UserExternalRule
 {
-            public function updateMemberUser($request)
+    public function updateMemberUser($request)
     {
         $rules = [
             'id' => 'required|string|max:100',
             'name' => 'required|string|min:3|max:30',
             'email' => 'required|string|email|max:50',
-            'position' => 'required|string',
-            'active' => 'required|numeric'
         ];
 
         $messages = [
@@ -29,10 +27,6 @@ class UserExternalRule
             'email.string' => 'O e-mail deve ser uma string',
             'email.email' => 'O e-mail deve ser um endereço de e-mail válido',
             'email.max' => 'O e-mail não pode ter mais de 50 caracteres',
-            'position.required' => 'O cargo do novo usuário é obrigatório',
-            'position.string' => 'O cargo do novo usuário deve ser uma string',
-            'active.requerid' => 'O status do novo usuário é obrigatório',
-            'active.requerid' => 'O status do novo usuário deve ser um número',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);

@@ -8,19 +8,20 @@ use App\Rules\External\UserExternalRule;
 class UserExternalService
 {
     protected $userExternalRepository;
-    protected $ruleExternal;
+
+    protected $userRuleExternal;
 
     public function __construct(
-        UserExternalRule $ruleExternal,
+        UserExternalRule $userRuleExternal,
         UserExternalRepository $userExternalRepository
-    ){
+    ) {
         $this->userExternalRepository = $userExternalRepository;
-        $this->ruleExternal = $ruleExternal;
+        $this->userRuleExternal = $userRuleExternal;
     }
 
     public function updateMemberUser($request)
     {
-        $this->ruleExternal->updateMemberUser($request);
+        $this->userRuleExternal->updateMemberUser($request);
 
         $data = $request->only(['name', 'email', 'position', 'phone', 'active']);
 

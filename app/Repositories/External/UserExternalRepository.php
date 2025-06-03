@@ -26,9 +26,10 @@ class UserExternalRepository
     public function updateMemberUser($id, array $data)
     {
         $member = $this->findById($id);
-        if($member){
+        if ($member) {
             $member->update($data);
         }
+
         return $member;
     }
 

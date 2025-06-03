@@ -30,8 +30,7 @@ class MemberController
         UserRule $rule,
         UserExternalRepository $userExternalRepository,
         UserExternalService $userExternalService,
-        )
-    {
+    ) {
         $this->service = $service;
         $this->repository = $repository;
         $this->rule = $rule;
@@ -118,22 +117,21 @@ class MemberController
     public function updateMemberUser(Request $request)
     {
         try {
-            // $member = $this->userExternalService->updateMemberUser($request);
-            // if($member){
-            //     return response()->json(['member' => MemberResource::collection($member), 'message' => 'Dados do membro foram atualizados com sucesso'], 200);
-            // }
-            // throw new \Exception('Falha ao atualizar dados do membro');
-
             DB::beginTransaction();
-            $member = $this->userExternalService->updateMemberUser($request);
-            if($member){
-                $memberUpdate = $this->userExternalRepository->updateMemberUser($member->id, $member);
-                return response()->json(['member' => MemberResource::collection($memberUpdate), 'message' => 'Dados do membro foram atualizados com sucesso'], 200);
-            }
-            throw new \Exception('Falha ao atualizar dados do membro');
 
+            $member = $this->userExternalService->updateMemberUser($request);
+            if ($member) {
+                DB::commit();
+
+                $members = $this->userExternalRepository->getMembersByEnterprise($member->enterprise_id);
+
+                return response()->json(['members' => MemberResource::collection($members), 'message' => 'Dados do membro foram atualizados com sucesso'], 200);
+            }
         } catch (\Exception $e) {
+            DB::rollBack();
+
             Log::error('Erro ao atualizar dados do membro: '.$e->getMessage());
+
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
