@@ -198,7 +198,7 @@ class MemberController
 
             $this->userExternalRule->delete($id);
             $member = $this->userExternalRepository->delete($id);
-            dd($member->toArray());
+
             if ($member) {
                 DB::commit();
 

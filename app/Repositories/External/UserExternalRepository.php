@@ -3,6 +3,7 @@
 namespace App\Repositories\External;
 
 use App\Models\External\UserExternal;
+use Illuminate\Support\Facades\DB;
 
 class UserExternalRepository
 {
@@ -46,8 +47,14 @@ class UserExternalRepository
     public function delete($id)
     {
         $member = $this->findById($id);
-        if($member) {
+        if ($member) {
+            DB::connection('external')->table('notifications')->where('user_id', $id)->delete();
+            DB::connection('external')->table('registers')->where('user_id', $id)->delete();
+            DB::connection('external')->table('feedbacks')->where('user_id', $id)->delete();
+
             return $member->delete();
         }
+
+        return false;
     }
 }
