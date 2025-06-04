@@ -13,6 +13,7 @@ class MemberResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'phone' => $this->phone,
             'position' => $this->position,
             'active' => $this->active,
             'created_by' => $this->created_by,
