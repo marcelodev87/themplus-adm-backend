@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Internal\MemberResource;
 use App\Repositories\External\UserExternalRepository;
 use App\Repositories\Internal\UserRepository;
+use App\Rules\External\UserExternalRule;
 use App\Rules\UserRule;
 use App\Services\External\UserExternalService;
 use App\Services\Internal\UserService;
@@ -22,12 +23,15 @@ class MemberController
 
     private $rule;
 
+    private $userExternalRule;
+
     private $userExternalService;
 
     public function __construct(
         UserService $service,
         UserRepository $repository,
         UserRule $rule,
+        UserExternalRule $userExternalRule,
         UserExternalRepository $userExternalRepository,
         UserExternalService $userExternalService,
     ) {
@@ -36,6 +40,7 @@ class MemberController
         $this->rule = $rule;
         $this->userExternalRepository = $userExternalRepository;
         $this->userExternalService = $userExternalService;
+        $this->userExternalRule = $userExternalRule;
     }
 
     public function index()
@@ -170,6 +175,30 @@ class MemberController
             $this->rule->delete($id);
             $member = $this->repository->delete($id);
 
+            if ($member) {
+                DB::commit();
+
+                return response()->json(['message' => 'Membro deletado com sucesso'], 200);
+            }
+
+            throw new \Exception('Falha ao deletar membro');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error('Erro ao deletar membro: '.$e->getMessage());
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function deleteMemberUser($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $this->userExternalRule->delete($id);
+            $member = $this->userExternalRepository->delete($id);
+            dd($member->toArray());
             if ($member) {
                 DB::commit();
 

@@ -42,4 +42,12 @@ class UserExternalRepository
     {
         return $this->model->create($data);
     }
+
+    public function delete($id)
+    {
+        $member = $this->findById($id);
+        if($member) {
+            return $member->delete();
+        }
+    }
 }

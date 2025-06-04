@@ -48,6 +48,7 @@ Route::prefix('member')->middleware('auth:sanctum')->group(function () {
     Route::put('/', [MemberController::class, 'update'])->middleware('admin');
     Route::put('/by-adm', [MemberController::class, 'updateMemberUser'])->middleware('admin');
     Route::delete('/{id}', [MemberController::class, 'destroy'])->middleware('admin');
+    Route::delete('/by-adm/{id}', [MemberController::class, 'deleteMemberUser'])->middleware('admin');
 });
 
 Route::prefix('department')->middleware(['auth:sanctum'])->group(function () {
