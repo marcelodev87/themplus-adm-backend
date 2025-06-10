@@ -3,6 +3,7 @@
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EnterpriseController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SubscriptionController;
@@ -58,6 +59,14 @@ Route::prefix('department')->middleware(['auth:sanctum'])->group(function () {
 Route::prefix('subscription')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [SubscriptionController::class, 'index']);
     Route::put('/', [SubscriptionController::class, 'update'])->middleware('admin');
+});
+
+Route::prefix('feedbacks')->middleware(['auth:sanctum'])->group(function (){
+    Route::get('/', [FeedbackController::class, 'index'])->middleware('admin');
+    Route::get('/saved', [FeedbackController::class, 'getSaved'])->middleware('admin');
+    Route::post('/{id}',[FeedbackController::class, 'store'])->middleware('admin');
+    Route::delete('/{id}',[FeedbackController::class, 'destroy'])->middleware('admin');
+    Route::delete('/saved/{id}',[FeedbackController::class, 'deleteSaved'])->middleware('admin');
 });
 
 Route::prefix('service')->middleware(['auth:sanctum'])->group(function () {
