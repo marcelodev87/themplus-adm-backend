@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Internal\MemberResource;
+use App\Repositories\External\UserExternalRepository;
 use App\Repositories\Internal\UserRepository;
+use App\Rules\External\UserExternalRule;
 use App\Rules\UserRule;
+use App\Services\External\UserExternalService;
 use App\Services\Internal\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,13 +19,28 @@ class MemberController
 
     private $repository;
 
+    private $userExternalRepository;
+
     private $rule;
 
-    public function __construct(UserService $service, UserRepository $repository, UserRule $rule)
-    {
+    private $userExternalRule;
+
+    private $userExternalService;
+
+    public function __construct(
+        UserService $service,
+        UserRepository $repository,
+        UserRule $rule,
+        UserExternalRule $userExternalRule,
+        UserExternalRepository $userExternalRepository,
+        UserExternalService $userExternalService,
+    ) {
         $this->service = $service;
         $this->repository = $repository;
         $this->rule = $rule;
+        $this->userExternalRepository = $userExternalRepository;
+        $this->userExternalService = $userExternalService;
+        $this->userExternalRule = $userExternalRule;
     }
 
     public function index()
@@ -101,6 +119,28 @@ class MemberController
         }
     }
 
+    public function updateMemberUser(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $member = $this->userExternalService->updateMemberUser($request);
+            if ($member) {
+                DB::commit();
+
+                $members = $this->userExternalRepository->getMembersByEnterprise($member->enterprise_id);
+
+                return response()->json(['members' => MemberResource::collection($members), 'message' => 'Dados do membro foram atualizados com sucesso'], 200);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error('Erro ao atualizar dados do membro: '.$e->getMessage());
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
     public function active(Request $request)
     {
         try {
@@ -134,6 +174,30 @@ class MemberController
 
             $this->rule->delete($id);
             $member = $this->repository->delete($id);
+
+            if ($member) {
+                DB::commit();
+
+                return response()->json(['message' => 'Membro deletado com sucesso'], 200);
+            }
+
+            throw new \Exception('Falha ao deletar membro');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error('Erro ao deletar membro: '.$e->getMessage());
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function deleteMemberUser($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $this->userExternalRule->delete($id);
+            $member = $this->userExternalRepository->delete($id);
 
             if ($member) {
                 DB::commit();

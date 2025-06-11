@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Internal;
+namespace App\Http\Resources\External;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -13,7 +13,6 @@ class MemberResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'phone' => $this->phone,
             'position' => $this->position,
             'active' => $this->active,
             'created_by' => $this->created_by,

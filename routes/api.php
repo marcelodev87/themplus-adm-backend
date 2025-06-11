@@ -23,6 +23,7 @@ Route::prefix('user')->middleware('auth:sanctum')->group(function () {
 Route::prefix('enterprise')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [EnterpriseController::class, 'index']);
     Route::get('/{id}', [EnterpriseController::class, 'show']);
+    Route::get('/members/{id}', [EnterpriseController::class, 'getMembersByEnterprise']);
     Route::get('/{id}/coupons', [EnterpriseController::class, 'getCouponsInEnterprise']);
     Route::put('/', [EnterpriseController::class, 'update'])->middleware('admin');
     Route::post('/', [EnterpriseController::class, 'store'])->middleware('admin');
@@ -45,7 +46,9 @@ Route::prefix('member')->middleware('auth:sanctum')->group(function () {
     Route::post('/', [MemberController::class, 'store'])->middleware('admin');
     Route::put('/active', [MemberController::class, 'active'])->middleware('admin');
     Route::put('/', [MemberController::class, 'update'])->middleware('admin');
+    Route::put('/by-adm', [MemberController::class, 'updateMemberUser'])->middleware('admin');
     Route::delete('/{id}', [MemberController::class, 'destroy'])->middleware('admin');
+    Route::delete('/by-adm/{id}', [MemberController::class, 'deleteMemberUser'])->middleware('admin');
 });
 
 Route::prefix('department')->middleware(['auth:sanctum'])->group(function () {

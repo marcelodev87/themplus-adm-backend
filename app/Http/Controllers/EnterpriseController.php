@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Internal\Coupon\CouponEnterpriseResource;
 use App\Repositories\External\EnterpriseExternalRepository;
 use App\Repositories\External\EnterpriseHasCouponExternalRepository;
+use App\Repositories\External\UserExternalRepository;
 use App\Rules\EnterpriseRule;
 use App\Services\External\EnterpriseExternalService;
 use Illuminate\Http\Request;
@@ -17,14 +18,17 @@ class EnterpriseController
 
     private $repository;
 
+    private $userExternalRepository;
+
     private $enterpriseHasCouponExternalRepository;
 
     private $rule;
 
-    public function __construct(EnterpriseExternalService $service, EnterpriseExternalRepository $repository, EnterpriseRule $rule, EnterpriseHasCouponExternalRepository $enterpriseHasCouponExternalRepository)
+    public function __construct(EnterpriseExternalService $service, EnterpriseExternalRepository $repository, EnterpriseRule $rule, EnterpriseHasCouponExternalRepository $enterpriseHasCouponExternalRepository, UserExternalRepository $userExternalRepository)
     {
         $this->service = $service;
         $this->repository = $repository;
+        $this->userExternalRepository = $userExternalRepository;
         $this->rule = $rule;
         $this->enterpriseHasCouponExternalRepository = $enterpriseHasCouponExternalRepository;
     }
@@ -55,6 +59,19 @@ class EnterpriseController
             Log::error('Erro ao buscar dados da organização: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getMembersByEnterprise($id)
+    {
+        try {
+            $members = $this->userExternalRepository->getMembersByEnterprise($id);
+
+            return response()->json([
+                'members' => $members,
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Erro ao buscar membros da organização: '.$e->getMessage());
         }
     }
 
