@@ -71,7 +71,7 @@ class EnterpriseController
                 'members' => $members,
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar membros da empresa: '.$e->getMessage());
+            Log::error('Erro ao buscar membros da organização: '.$e->getMessage());
         }
     }
 
