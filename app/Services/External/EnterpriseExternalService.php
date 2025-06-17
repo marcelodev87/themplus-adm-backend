@@ -10,7 +10,7 @@ use App\Repositories\External\EnterpriseExternalRepository;
 use App\Repositories\External\SettingsCounterExternalRepository;
 use App\Repositories\External\SubscriptionExternalRepository;
 use App\Repositories\External\UserExternalRepository;
-use App\Repositories\NotificationExternalRepository;
+use App\Repositories\External\NotificationExternalRepository;
 use App\Rules\EnterpriseRule;
 use Illuminate\Support\Facades\Hash;
 
@@ -152,9 +152,8 @@ class EnterpriseExternalService
     public function sendNotification($request)
     {
         $this->rule->sendNotification($request);
-
-        foreach ($request->enterprisesId as $enterprise) {
-            $this->notificationExternalRepository->create($enterprise->id, $request->title, $request->text);
+        foreach ($request->enterprisesId as $enterpriseId) {
+            $this->notificationExternalRepository->create($enterpriseId, $request->title, $request->text);
         }
     }
 }
