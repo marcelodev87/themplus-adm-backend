@@ -25,8 +25,9 @@ class NotificationTemplateController
     {
         try {
             $templates = $this->repository->getAll();
+
             return response()->json([
-                'templates' => TemplateNotificationResource::collection($templates)
+                'templates' => TemplateNotificationResource::collection($templates),
             ], 200);
         } catch (\Exception $e) {
             Log::error('Erro ao buscar todos os templates: '.$e->getMessage());
@@ -35,18 +36,20 @@ class NotificationTemplateController
         }
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         try {
             DB::beginTransaction();
 
             $this->rule->create($request);
 
-            $template = $this->repository->create($request->only(['title','text']));
+            $template = $this->repository->create($request->only(['title', 'text']));
 
-            if($template){
+            if ($template) {
                 DB::commit();
 
                 $templates = $this->repository->getAll();
+
                 return response()->json(['templates' => $templates, 'message' => 'Template criado com sucesso'], 201);
             }
             throw new \Exception('Falha ao criar template');
@@ -57,17 +60,19 @@ class NotificationTemplateController
         }
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         try {
             DB::beginTransaction();
             $this->rule->update($request);
 
-            $template = $this->repository->update($request->id, $request->only(['title','text']));
+            $template = $this->repository->update($request->id, $request->only(['title', 'text']));
 
-            if($template){
+            if ($template) {
 
                 DB::commit();
                 $templates = $this->repository->getAll();
+
                 return response()->json(['templates' => $templates, 'message' => 'Template atualizado com sucesso'], 200);
 
             }
@@ -79,14 +84,15 @@ class NotificationTemplateController
         }
     }
 
-    public function destroy(Request $request){
+    public function destroy(Request $request)
+    {
         try {
             DB::beginTransaction();
-            
+
             $this->rule->delete($request->id);
 
             $template = $this->repository->delete($request->id);
-            if($template){
+            if ($template) {
                 DB::commit();
 
                 return response()->json(['message' => 'Template deletado com sucesso'], 200);

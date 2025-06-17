@@ -69,6 +69,6 @@ Route::prefix('service')->middleware(['auth:sanctum'])->group(function () {
 Route::prefix('template-notification')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [NotificationTemplateController::class, 'index']);
     Route::post('/', [NotificationTemplateController::class, 'store']);
-    Route::put('/{id}', [NotificationTemplateController::class, 'update']);
+    Route::put('/', [NotificationTemplateController::class, 'update']);
     Route::delete('/{id}', [NotificationTemplateController::class, 'destroy']);
 });
