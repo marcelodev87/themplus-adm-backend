@@ -2,24 +2,25 @@
 
 namespace App\Repositories\Internal;
 
-use App\Models\Internal\NotificationTemplates;
+use App\Models\Internal\NotificationTemplate;
 
 class NotificationTemplateRepository
 {
     protected $model;
 
     public function __construct(
-        NotificationTemplates $NotificationTemplate
-    )
-    {
-        $this->model = $NotificationTemplate;
+        NotificationTemplate $model
+    ) {
+        $this->model = $model;
     }
 
-    public function getAll(){
+    public function getAll()
+    {
         return $this->model->all();
     }
 
-    public function findById($id){
+    public function findById($id)
+    {
         return $this->model->find($id);
     }
 
@@ -30,17 +31,17 @@ class NotificationTemplateRepository
 
     public function update($id, array $data)
     {
-        $notification = $this->findById($id);
-        if($notification) {
-            return $notification->update($data);
+        $template = $this->findById($id);
+        if ($template) {
+            return $template->update($data);
         }
     }
 
     public function delete($id)
     {
-        $notification = $this->findById($id);
-        if($notification) {
-            return $notification->delete($id);
+        $template = $this->findById($id);
+        if ($template) {
+            return $template->delete($id);
         }
     }
 }

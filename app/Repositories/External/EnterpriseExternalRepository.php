@@ -86,7 +86,7 @@ class EnterpriseExternalRepository
                     ->get();
                 foreach ($movements as $movement) {
                     if ($movement->receipt) {
-                        $oldFilePath = str_replace(env('AWS_URL') . '/', '', $movement->receipt);
+                        $oldFilePath = str_replace(env('AWS_URL').'/', '', $movement->receipt);
                         Storage::disk('s3')->delete($oldFilePath);
                     }
                 }
@@ -97,14 +97,14 @@ class EnterpriseExternalRepository
                     ->get();
                 foreach ($schedulings as $scheduling) {
                     if ($scheduling->receipt) {
-                        $oldFilePath = str_replace(env('AWS_URL') . '/', '', $scheduling->receipt);
+                        $oldFilePath = str_replace(env('AWS_URL').'/', '', $scheduling->receipt);
                         Storage::disk('s3')->delete($oldFilePath);
                     }
                 }
                 DB::connection('external')->table('schedulings')
                     ->where('enterprise_id', $office->id)
                     ->delete();
-                
+
                 $financial_receipts = DB::connection('external')->table('financial_movements_receipts')->where('enterprise_id', $office->id)->get();
                 foreach ($financial_receipts as $fr) {
                     if ($fr->receipt) {
@@ -134,7 +134,7 @@ class EnterpriseExternalRepository
                 ->get();
             foreach ($movements as $movement) {
                 if ($movement->receipt) {
-                    $oldFilePath = str_replace(env('AWS_URL') . '/', '', $movement->receipt);
+                    $oldFilePath = str_replace(env('AWS_URL').'/', '', $movement->receipt);
                     Storage::disk('s3')->delete($oldFilePath);
                 }
             }
@@ -145,14 +145,14 @@ class EnterpriseExternalRepository
                 ->get();
             foreach ($schedulings as $scheduling) {
                 if ($scheduling->receipt) {
-                    $oldFilePath = str_replace(env('AWS_URL') . '/', '', $scheduling->receipt);
+                    $oldFilePath = str_replace(env('AWS_URL').'/', '', $scheduling->receipt);
                     Storage::disk('s3')->delete($oldFilePath);
                 }
             }
             DB::connection('external')->table('schedulings')
                 ->where('enterprise_id', $id)
                 ->delete();
-            
+
             $financial_receipts = DB::connection('external')->table('financial_movements_receipts')->where('enterprise_id', $id)->get();
             foreach ($financial_receipts as $fr) {
                 if ($fr->receipt) {

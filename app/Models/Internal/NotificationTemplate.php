@@ -6,7 +6,7 @@ use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class NotificationTemplates extends Model
+class NotificationTemplate extends Model
 {
     use HasUuid, Notifiable;
 
@@ -14,6 +14,6 @@ class NotificationTemplates extends Model
 
     protected $fillable = [
         'title',
-        'text'
+        'text',
     ];
 }

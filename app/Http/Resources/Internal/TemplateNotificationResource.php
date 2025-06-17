@@ -12,7 +12,7 @@ class TemplateNotificationResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'text' => $this->text
+            'text' => $this->text,
         ];
     }
 }

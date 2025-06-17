@@ -45,10 +45,11 @@ class EnterpriseController
         }
     }
 
-        public function indexSelected()
+    public function indexSelected()
     {
         try {
             $enterprises = $this->repository->getAll();
+
             return response()->json([
                 'enterprises' => EnterpriseSelectResource::collection($enterprises),
             ], 200);

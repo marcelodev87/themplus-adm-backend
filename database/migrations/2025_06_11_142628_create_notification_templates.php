@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('notification_templates', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('title');
-            $table->text('text', '10000');
+            $table->text('text');
             $table->timestamps();
         });
     }
