@@ -28,6 +28,7 @@ Route::prefix('enterprise')->middleware('auth:sanctum')->group(function () {
     Route::get('/{id}/coupons', [EnterpriseController::class, 'getCouponsInEnterprise']);
     Route::put('/', [EnterpriseController::class, 'update'])->middleware('admin');
     Route::post('/', [EnterpriseController::class, 'store'])->middleware('admin');
+    Route::post('/sendNotification', [EnterpriseController::class, 'sendNotification'])->middleware('admin');
     Route::post('/coupon', [EnterpriseController::class, 'setCoupon'])->middleware('admin');
     Route::delete('/{id}', [EnterpriseController::class, 'destroy'])->middleware('admin');
     Route::delete('/{id}/coupon', [EnterpriseController::class, 'destroyCouponByEnterprise'])->middleware('admin');
