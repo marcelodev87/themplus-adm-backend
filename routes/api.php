@@ -5,6 +5,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EnterpriseController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\NotificationTemplateController;
+use App\Http\Controllers\SendNotificationController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
@@ -28,7 +29,6 @@ Route::prefix('enterprise')->middleware('auth:sanctum')->group(function () {
     Route::get('/{id}/coupons', [EnterpriseController::class, 'getCouponsInEnterprise']);
     Route::put('/', [EnterpriseController::class, 'update'])->middleware('admin');
     Route::post('/', [EnterpriseController::class, 'store'])->middleware('admin');
-    Route::post('/sendNotification', [EnterpriseController::class, 'sendNotification'])->middleware('admin');
     Route::post('/coupon', [EnterpriseController::class, 'setCoupon'])->middleware('admin');
     Route::delete('/{id}', [EnterpriseController::class, 'destroy'])->middleware('admin');
     Route::delete('/{id}/coupon', [EnterpriseController::class, 'destroyCouponByEnterprise'])->middleware('admin');
@@ -72,4 +72,8 @@ Route::prefix('template-notification')->middleware(['auth:sanctum'])->group(func
     Route::post('/', [NotificationTemplateController::class, 'store']);
     Route::put('/', [NotificationTemplateController::class, 'update']);
     Route::delete('/{id}', [NotificationTemplateController::class, 'destroy']);
+});
+
+Route::prefix('send-notification')->middleware(['auth:sanctum'])->group(function () {
+    Route::post('/', [SendNotificationController::class, 'sendNotification'])->middleware('admin');
 });

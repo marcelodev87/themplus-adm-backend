@@ -10,7 +10,6 @@ use App\Repositories\External\EnterpriseExternalRepository;
 use App\Repositories\External\SettingsCounterExternalRepository;
 use App\Repositories\External\SubscriptionExternalRepository;
 use App\Repositories\External\UserExternalRepository;
-use App\Repositories\External\NotificationExternalRepository;
 use App\Rules\EnterpriseRule;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,7 +27,7 @@ class EnterpriseExternalService
 
     protected $userExternalRepository;
 
-    protected $notificationExternalRepository;
+
 
     public function __construct(
         EnterpriseRule $rule,
@@ -37,7 +36,7 @@ class EnterpriseExternalService
         AccountExternalRepository $accountExternalRepository,
         SettingsCounterExternalRepository $settingsCounterExternalRepository,
         UserExternalRepository $userExternalRepository,
-        NotificationExternalRepository $notificationExternalRepository
+
 
     ) {
         $this->rule = $rule;
@@ -46,7 +45,7 @@ class EnterpriseExternalService
         $this->accountExternalRepository = $accountExternalRepository;
         $this->settingsCounterExternalRepository = $settingsCounterExternalRepository;
         $this->userExternalRepository = $userExternalRepository;
-        $this->notificationExternalRepository = $notificationExternalRepository;
+
     }
 
     private function createEnterprise($request)
@@ -147,13 +146,5 @@ class EnterpriseExternalService
         CouponHelper::validate($request->input('enterpriseId'), $request->input('couponId'));
 
         return $this->repository->setCoupon($request->input('enterpriseId'), $request->input('couponId'));
-    }
-
-    public function sendNotification($request)
-    {
-        $this->rule->sendNotification($request);
-        foreach ($request->enterprisesId as $enterpriseId) {
-            $this->notificationExternalRepository->create($enterpriseId, $request->title, $request->text);
-        }
     }
 }
