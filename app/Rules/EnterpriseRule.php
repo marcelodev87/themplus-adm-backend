@@ -59,7 +59,6 @@ class EnterpriseRule
         return true;
     }
 
-
     public function show($id)
     {
         $rules = [

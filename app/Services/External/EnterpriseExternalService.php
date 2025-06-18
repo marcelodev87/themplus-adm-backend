@@ -27,8 +27,6 @@ class EnterpriseExternalService
 
     protected $userExternalRepository;
 
-
-
     public function __construct(
         EnterpriseRule $rule,
         EnterpriseExternalRepository $repository,
@@ -36,7 +34,6 @@ class EnterpriseExternalService
         AccountExternalRepository $accountExternalRepository,
         SettingsCounterExternalRepository $settingsCounterExternalRepository,
         UserExternalRepository $userExternalRepository,
-
 
     ) {
         $this->rule = $rule;

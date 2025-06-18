@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\External\SendNotificationService;
+use App\Services\External\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class SendNotificationController
+class NotificationController
 {
     private $service;
 
-    public function __construct(SendNotificationService $service)
+    public function __construct(NotificationService $service)
     {
         $this->service = $service;
     }
 
-        public function sendNotification(Request $request)
+    public function sendNotification(Request $request)
     {
         try {
             $this->service->sendNotification($request);
@@ -24,7 +24,7 @@ class SendNotificationController
 
         } catch (\Exception $e) {
 
-            Log::error('Erro ao envioar notificação: '.$e->getMessage());
+            Log::error('Erro ao enviar notificação: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

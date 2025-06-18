@@ -3,7 +3,6 @@
 namespace App\Repositories\External;
 
 use App\Models\External\NotificationExternal;
-use App\Repositories\External\UserExternalRepository;
 
 class NotificationExternalRepository
 {

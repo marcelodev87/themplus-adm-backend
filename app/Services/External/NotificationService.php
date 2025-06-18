@@ -5,7 +5,7 @@ namespace App\Services\External;
 use App\Repositories\External\NotificationExternalRepository;
 use App\Rules\NotificationRule;
 
-class SendNotificationService
+class NotificationService
 {
     protected $rule;
 
@@ -14,13 +14,12 @@ class SendNotificationService
     public function __construct(
         NotificationRule $rule,
         NotificationExternalRepository $notificationExternalRepository
-    )
-    {
+    ) {
         $this->rule = $rule;
         $this->notificationExternalRepository = $notificationExternalRepository;
     }
 
-        public function sendNotification($request)
+    public function sendNotification($request)
     {
         $this->rule->sendNotification($request);
         foreach ($request->enterprisesId as $enterpriseId) {

@@ -4,8 +4,8 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EnterpriseController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationTemplateController;
-use App\Http\Controllers\SendNotificationController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
@@ -74,6 +74,6 @@ Route::prefix('template-notification')->middleware(['auth:sanctum'])->group(func
     Route::delete('/{id}', [NotificationTemplateController::class, 'destroy']);
 });
 
-Route::prefix('send-notification')->middleware(['auth:sanctum'])->group(function () {
-    Route::post('/', [SendNotificationController::class, 'sendNotification'])->middleware('admin');
+Route::prefix('notification')->middleware(['auth:sanctum'])->group(function () {
+    Route::post('/send', [NotificationController::class, 'sendNotification'])->middleware('admin');
 });
