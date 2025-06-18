@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\External\EnterpriseSelectResource;
 use App\Http\Resources\Internal\Coupon\CouponEnterpriseResource;
 use App\Repositories\External\EnterpriseExternalRepository;
 use App\Repositories\External\EnterpriseHasCouponExternalRepository;
@@ -43,6 +44,21 @@ class EnterpriseController
             ], 200);
         } catch (\Exception $e) {
             Log::error('Erro ao buscar todas as filiais: '.$e->getMessage());
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function indexSelected()
+    {
+        try {
+            $enterprises = $this->repository->getAll();
+
+            return response()->json([
+                'enterprises' => EnterpriseSelectResource::collection($enterprises),
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Erro ao buscar todas as organizações: '.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

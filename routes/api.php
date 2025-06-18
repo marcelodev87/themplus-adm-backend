@@ -5,6 +5,8 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EnterpriseController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\NotificationTemplateController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
@@ -23,6 +25,7 @@ Route::prefix('user')->middleware('auth:sanctum')->group(function () {
 
 Route::prefix('enterprise')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [EnterpriseController::class, 'index']);
+    Route::get('/list-select', [EnterpriseController::class, 'indexSelected']);
     Route::get('/{id}', [EnterpriseController::class, 'show']);
     Route::get('/members/{id}', [EnterpriseController::class, 'getMembersByEnterprise']);
     Route::get('/{id}/coupons', [EnterpriseController::class, 'getCouponsInEnterprise']);
@@ -74,4 +77,15 @@ Route::prefix('feedbacks')->middleware(['auth:sanctum'])->group(function (){
 
 Route::prefix('service')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [ServiceController::class, 'index']);
+});
+
+Route::prefix('template-notification')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/', [NotificationTemplateController::class, 'index']);
+    Route::post('/', [NotificationTemplateController::class, 'store']);
+    Route::put('/', [NotificationTemplateController::class, 'update']);
+    Route::delete('/{id}', [NotificationTemplateController::class, 'destroy']);
+});
+
+Route::prefix('notification')->middleware(['auth:sanctum'])->group(function () {
+    Route::post('/send', [NotificationController::class, 'sendNotification'])->middleware('admin');
 });
