@@ -8,6 +8,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationTemplateController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -88,4 +89,9 @@ Route::prefix('template-notification')->middleware(['auth:sanctum'])->group(func
 
 Route::prefix('notification')->middleware(['auth:sanctum'])->group(function () {
     Route::post('/send', [NotificationController::class, 'sendNotification'])->middleware('admin');
+});
+
+Route::prefix('setting')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/', [SettingController::class, 'index'])->middleware('admin');
+    Route::put('/', [SettingController::class, 'update'])->middleware('admin');
 });
