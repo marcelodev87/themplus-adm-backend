@@ -10,9 +10,8 @@ class SettingRepository
 
     public function __construct(
         Setting $model
-    )
-    {
-     $this->model = $model;   
+    ) {
+        $this->model = $model;
     }
 
     public function getAll()
@@ -23,11 +22,12 @@ class SettingRepository
     public function update($request, $data)
     {
         $setting = $this->model->where('key', $request)->first();
-        if($setting) {
+        if ($setting) {
             $setting->update(['value' => $data]);
 
             return $setting;
         }
+
         return null;
     }
 }

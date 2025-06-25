@@ -15,7 +15,9 @@ class FeedbackExternalRepository
 
     public function getAll()
     {
-        return $this->model->with(['externalUser', 'externalEnterprise'])->get();
+        return $this->model->with(['externalUser', 'externalEnterprise'])
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     public function findById($id)

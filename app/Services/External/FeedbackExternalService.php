@@ -10,7 +10,7 @@ class FeedbackExternalService
 
     public function __construct(FeedbackExternalRepository $feedbackRepository)
     {
-       $this->feedbackRepository = $feedbackRepository;
+        $this->feedbackRepository = $feedbackRepository;
     }
 
     public function index()

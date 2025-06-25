@@ -39,23 +39,23 @@ class SettingController
             DB::beginTransaction();
 
             $this->rule->update($request);
-            
+
             $data = [
-                'allow_feedback_saved' => $request->input('allow_feedback_saved')
+                'allow_feedback_saved' => $request->input('allow_feedback_saved'),
             ];
 
             $setting = $this->repository->update('allow_feedback_saved', $data['allow_feedback_saved']);
 
-            if($setting){
-                
+            if ($setting) {
+
                 DB::commit();
                 $setting = $this->repository->getAll();
 
-                return response()->json(['settings' => $setting, 'message' => "Configuração atualizada com sucesso"], 200);
+                return response()->json(['settings' => $setting, 'message' => 'Configuração atualizada com sucesso'], 200);
             }
         } catch (\Exception $e) {
             Log::error('Erro ao atualizar configuração'.$e->getMessage());
-            
+
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }

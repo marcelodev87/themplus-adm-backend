@@ -21,7 +21,7 @@ class SettingRule
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             throw new ValidationException($validator);
         }
 

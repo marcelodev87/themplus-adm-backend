@@ -15,7 +15,7 @@ class FeedbackSavedExternalRepository
 
     public function getAll()
     {
-        return $this->model->all();
+        return $this->model->orderByDesc('date_feedback')->get();
     }
 
     public function findById($id)

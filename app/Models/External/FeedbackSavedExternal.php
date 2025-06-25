@@ -19,9 +19,6 @@ class FeedbackSavedExternal extends Model
         'user_email',
         'enterprise_name',
         'message',
-        'date_feedback'
-    ];
-    protected $casts = [
-        'date_feedback' => 'datetime',
+        'date_feedback',
     ];
 }

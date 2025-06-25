@@ -11,7 +11,7 @@ class StartAutomaticSaveFeedbackSeeder extends Seeder
     {
         Setting::create([
             'key' => 'allow_feedback_saved',
-            'value' => '0'
+            'value' => '0',
         ]);
     }
 }

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 class FeedbackController
 {
     protected $feedbackRepository;
+
     protected $feedbackSavedRepository;
 
     public function __construct(FeedbackExternalRepository $feedbackRepository, FeedbackSavedExternalRepository $feedbackSavedRepository)
@@ -29,7 +30,8 @@ class FeedbackController
                 'feedbacks' => FeedbackTableResource::collection($feedbacks),
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar feedbacks'. $e->getMessage());
+            Log::error('Erro ao buscar feedbacks'.$e->getMessage());
+
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
@@ -38,11 +40,13 @@ class FeedbackController
     {
         try {
             $savedFeedbacks = $this->feedbackSavedRepository->getAll();
+
             return response()->json([
-                'feedbacks' => FeedbackSavedTableResource::collection($savedFeedbacks)
+                'feedbacks' => FeedbackSavedTableResource::collection($savedFeedbacks),
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro buscar feedbacks'. $e->getMessage());
+            Log::error('Erro buscar feedbacks'.$e->getMessage());
+
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
@@ -53,7 +57,7 @@ class FeedbackController
             DB::beginTransaction();
             $feedback = $this->feedbackRepository->findById($id);
 
-            if($feedback){
+            if ($feedback) {
 
                 $feedback->load('externalUser', 'externalEnterprise');
                 $data = [
@@ -61,21 +65,23 @@ class FeedbackController
                     'user_email' => $feedback->externalUser->email,
                     'enterprise_name' => $feedback->externalEnterprise->name,
                     'message' => $feedback->message,
-                    'date_feedback' => (string)$feedback->created_at,
-
+                    'date_feedback' => $feedback->created_at->format('Y-m-d'),
                 ];
+
                 $feedbackSaved = $this->feedbackSavedRepository->create($data);
-                if($feedbackSaved){
+                if ($feedbackSaved) {
                     DB::commit();
                     $this->feedbackRepository->delete($id);
                     $feedbacks = $this->feedbackRepository->getAll();
+
                     return response()->json(['feedbacks' => FeedbackTableResource::collection($feedbacks), 'message' => 'Feedback salvo com sucesso'], 201);
                 }
             }
             throw new \Exception('Falha ao salvar feedback');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Erro ao salvar feedback'. $e->getMessage());
+            Log::error('Erro ao salvar feedback'.$e->getMessage());
+
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
@@ -86,7 +92,7 @@ class FeedbackController
             DB::beginTransaction();
             $feedback = $this->feedbackSavedRepository->delete($id);
 
-            if($feedback){
+            if ($feedback) {
                 DB::commit();
 
                 $feedbacks = $this->feedbackSavedRepository->getAll();
@@ -103,13 +109,13 @@ class FeedbackController
         }
     }
 
-        public function destroy($id)
+    public function destroy($id)
     {
         try {
             DB::beginTransaction();
             $feedback = $this->feedbackRepository->delete($id);
 
-            if($feedback){
+            if ($feedback) {
                 DB::commit();
 
                 $feedbacks = $this->feedbackRepository->getAll();

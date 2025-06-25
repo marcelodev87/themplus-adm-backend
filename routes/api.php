@@ -68,12 +68,12 @@ Route::prefix('subscription')->middleware(['auth:sanctum'])->group(function () {
     Route::put('/', [SubscriptionController::class, 'update'])->middleware('admin');
 });
 
-Route::prefix('feedbacks')->middleware(['auth:sanctum'])->group(function (){
+Route::prefix('feedbacks')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [FeedbackController::class, 'index'])->middleware('admin');
     Route::get('/saved', [FeedbackController::class, 'getSaved'])->middleware('admin');
-    Route::post('/{id}',[FeedbackController::class, 'store'])->middleware('admin');
-    Route::delete('/{id}',[FeedbackController::class, 'destroy'])->middleware('admin');
-    Route::delete('/saved/{id}',[FeedbackController::class, 'deleteSaved'])->middleware('admin');
+    Route::post('/{id}', [FeedbackController::class, 'store'])->middleware('admin');
+    Route::delete('/{id}', [FeedbackController::class, 'destroy'])->middleware('admin');
+    Route::delete('/saved/{id}', [FeedbackController::class, 'deleteSaved'])->middleware('admin');
 });
 
 Route::prefix('service')->middleware(['auth:sanctum'])->group(function () {
