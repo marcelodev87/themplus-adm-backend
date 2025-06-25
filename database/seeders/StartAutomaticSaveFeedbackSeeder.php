@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Internal\Setting;
 use Illuminate\Database\Seeder;
 
-class StartAutomaticSaveFeedbacktionSeeder extends Seeder
+class StartAutomaticSaveFeedbackSeeder extends Seeder
 {
     public function run(): void
     {
