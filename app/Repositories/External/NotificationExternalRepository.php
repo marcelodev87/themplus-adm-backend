@@ -8,12 +8,12 @@ class NotificationExternalRepository
 {
     protected $model;
 
-    protected $userRepository;
+    protected $userExternalRepository;
 
-    public function __construct(NotificationExternal $notification, UserExternalRepository $userRepository)
+    public function __construct(NotificationExternal $notification, UserExternalRepository $userExternalRepository)
     {
         $this->model = $notification;
-        $this->userRepository = $userRepository;
+        $this->userExternalRepository = $userExternalRepository;
     }
 
     public function getAll()
@@ -23,7 +23,7 @@ class NotificationExternalRepository
 
     public function create($entepriseId, $title, $text)
     {
-        $users = $this->userRepository->getAllByEnterprise($entepriseId);
+        $users = $this->userExternalRepository->getMembersByEnterprise($entepriseId);
 
         foreach ($users as $user) {
             $data = [
