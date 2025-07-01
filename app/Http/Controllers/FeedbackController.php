@@ -36,6 +36,20 @@ class FeedbackController
         }
     }
 
+    public function getAllNotifications()
+    {
+        try {
+            $notifications = $this->feedbackRepository->getAllNotifications();
+
+            return response()->json(['notifications' => $notifications,
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Erro ao buscar notifications'.$e->getMessage());
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
     public function getSaved()
     {
         try {

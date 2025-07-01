@@ -20,6 +20,11 @@ class FeedbackExternalRepository
             ->get();
     }
 
+    public function getAllNotifications()
+    {
+        return $this->model->all()->count();
+    }
+
     public function findById($id)
     {
         return $this->model->find($id);
