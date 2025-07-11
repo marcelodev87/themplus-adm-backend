@@ -36,15 +36,15 @@ class FeedbackController
         }
     }
 
-    public function getAllNotifications()
+    public function getCountFeedbacks()
     {
         try {
-            $notifications = $this->feedbackRepository->getAllNotifications();
+            $notifications = $this->feedbackRepository->getCountFeedbacks();
 
-            return response()->json(['notifications' => $notifications,
+            return response()->json(['countFeedbacks' => $notifications,
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Erro ao buscar notifications'.$e->getMessage());
+            Log::error('Erro ao buscar quantidade de feedbacks'.$e->getMessage());
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

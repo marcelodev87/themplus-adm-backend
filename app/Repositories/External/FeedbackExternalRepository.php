@@ -20,9 +20,9 @@ class FeedbackExternalRepository
             ->get();
     }
 
-    public function getAllNotifications()
+    public function getCountFeedbacks()
     {
-        return $this->model->all()->count();
+        return $this->model->count();
     }
 
     public function findById($id)
