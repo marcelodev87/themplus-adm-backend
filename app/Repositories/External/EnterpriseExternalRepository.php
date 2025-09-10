@@ -91,6 +91,7 @@ class EnterpriseExternalRepository
                     }
                 }
                 DB::connection('external')->table('movements')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
 
                 $schedulings = DB::connection('external')->table('schedulings')
                     ->where('enterprise_id', $office->id)
@@ -104,6 +105,7 @@ class EnterpriseExternalRepository
                 DB::connection('external')->table('schedulings')
                     ->where('enterprise_id', $office->id)
                     ->delete();
+                // ---------------------
 
                 $financial_receipts = DB::connection('external')->table('financial_movements_receipts')->where('enterprise_id', $office->id)->get();
                 foreach ($financial_receipts as $fr) {
@@ -112,20 +114,78 @@ class EnterpriseExternalRepository
                         Storage::disk('s3')->delete($oldFilePath);
                     }
                 }
+                // ---------------------
 
                 DB::connection('external')->table('accounts')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
                 DB::connection('external')->table('categories')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
                 DB::connection('external')->table('users')->where('enterprise_id', $office->id)
                     ->whereNotNull('department_id')
                     ->update(['department_id' => null]);
                 DB::connection('external')->table('departments')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
                 DB::connection('external')->table('feedbacks')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
                 DB::connection('external')->table('financial_movements')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
                 DB::connection('external')->table('orders')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
                 DB::connection('external')->table('registers')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
                 DB::connection('external')->table('notifications')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
                 DB::connection('external')->table('users')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
                 DB::connection('external')->table('settings_counter')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
+                $cells = DB::table('cells')->where('enterprise_id', $office->id)->get();
+                foreach ($cells as $cell) {
+                    DB::table('cell_members')->where('cell_id', $cell->id)->delete();
+                }
+                DB::connection('external')->table('cells')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
+                $ministries = DB::connection('external')->table('ministries')->where('enterprise_id', $office->id)->get();
+                foreach ($ministries as $ministry) {
+                    DB::connection('external')->table('ministry_members')->where('ministry_id', $ministry->id)->delete();
+                }
+                DB::connection('external')->table('ministries')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
+                $roles = DB::connection('external')->table('roles')->where('enterprise_id', $office->id)->get();
+                foreach ($roles as $role) {
+                    DB::connection('external')->table('members')->where('role_id', $role->id)->update(['role_id' => null]);
+                }
+                DB::connection('external')->table('roles')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
+                $networks = DB::connection('external')->table('networks')->where('enterprise_id', $office->id)->get();
+                foreach ($networks as $network) {
+                    DB::connection('external')->table('cells')->where('network_id', $network->id)->update(['network_id' => null]);
+                }
+                DB::connection('external')->table('networks')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
+                $congregations = DB::table('congregations')->where('enterprise_id', $office->id)->get();
+                foreach ($congregations as $congregation) {
+                    DB::connection('external')->table('members')->where('congregation_id', $congregation->id)->update(['congregation_id' => null]);
+                }
+                DB::connection('external')->table('congregations')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
+
+                DB::connection('external')->table('members')->where('enterprise_id', $office->id)->delete();
+                // ---------------------
                 DB::connection('external')->table('enterprises')->where('id', $office->id)->delete();
             }
 
@@ -139,6 +199,7 @@ class EnterpriseExternalRepository
                 }
             }
             DB::connection('external')->table('movements')->where('enterprise_id', $id)->delete();
+            // ---------------------
 
             $schedulings = DB::connection('external')->table('schedulings')
                 ->where('enterprise_id', $id)
@@ -152,6 +213,7 @@ class EnterpriseExternalRepository
             DB::connection('external')->table('schedulings')
                 ->where('enterprise_id', $id)
                 ->delete();
+            // ---------------------
 
             $financial_receipts = DB::connection('external')->table('financial_movements_receipts')->where('enterprise_id', $id)->get();
             foreach ($financial_receipts as $fr) {
@@ -160,19 +222,78 @@ class EnterpriseExternalRepository
                     Storage::disk('s3')->delete($oldFilePath);
                 }
             }
+            // ---------------------
+
             DB::connection('external')->table('accounts')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
             DB::connection('external')->table('categories')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
             DB::connection('external')->table('users')->where('enterprise_id', $id)
                 ->whereNotNull('department_id')
                 ->update(['department_id' => null]);
             DB::connection('external')->table('departments')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
             DB::connection('external')->table('feedbacks')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
             DB::connection('external')->table('financial_movements')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
             DB::connection('external')->table('orders')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
             DB::connection('external')->table('registers')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
             DB::connection('external')->table('notifications')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
             DB::connection('external')->table('users')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
             DB::connection('external')->table('settings_counter')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
+            $cells = DB::table('cells')->where('enterprise_id', $id)->get();
+            foreach ($cells as $cell) {
+                DB::table('cell_members')->where('cell_id', $cell->id)->delete();
+            }
+            DB::connection('external')->table('cells')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
+            $ministries = DB::connection('external')->table('ministries')->where('enterprise_id', $id)->get();
+            foreach ($ministries as $ministry) {
+                DB::connection('external')->table('ministry_members')->where('ministry_id', $ministry->id)->delete();
+            }
+            DB::connection('external')->table('ministries')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
+            $roles = DB::connection('external')->table('roles')->where('enterprise_id', $id)->get();
+            foreach ($roles as $role) {
+                DB::connection('external')->table('members')->where('role_id', $role->id)->update(['role_id' => null]);
+            }
+            DB::connection('external')->table('roles')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
+            $networks = DB::connection('external')->table('networks')->where('enterprise_id', $id)->get();
+            foreach ($networks as $network) {
+                DB::connection('external')->table('cells')->where('network_id', $network->id)->update(['network_id' => null]);
+            }
+            DB::connection('external')->table('networks')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
+            $congregations = DB::table('congregations')->where('enterprise_id', $id)->get();
+            foreach ($congregations as $congregation) {
+                DB::connection('external')->table('members')->where('congregation_id', $congregation->id)->update(['congregation_id' => null]);
+            }
+            DB::connection('external')->table('congregations')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
+            DB::connection('external')->table('members')->where('enterprise_id', $id)->delete();
+            // ---------------------
 
             return $enterprise->delete();
         }
