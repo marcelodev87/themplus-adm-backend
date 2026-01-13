@@ -177,18 +177,12 @@ class EnterpriseExternalRepository
                 DB::connection('external')->table('networks')->where('enterprise_id', $office->id)->delete();
                 // ---------------------
 
-                $congregations = DB::table('congregations')->where('enterprise_id', $office->id)->get();
-                foreach ($congregations as $congregation) {
-                    DB::connection('external')->table('members')->where('congregation_id', $congregation->id)->update(['congregation_id' => null]);
-                }
-                DB::connection('external')->table('congregations')->where('enterprise_id', $office->id)->delete();
-                // ---------------------
-
                 DB::connection('external')->table('members')->where('enterprise_id', $office->id)->delete();
                 // ---------------------
                 DB::connection('external')->table('enterprises')->where('id', $office->id)->delete();
             }
 
+            // Deletando dados da matriz
             $movements = DB::connection('external')->table('movements')
                 ->where('enterprise_id', $id)
                 ->get();
@@ -285,11 +279,10 @@ class EnterpriseExternalRepository
             DB::connection('external')->table('networks')->where('enterprise_id', $id)->delete();
             // ---------------------
 
-            $congregations = DB::table('congregations')->where('enterprise_id', $id)->get();
-            foreach ($congregations as $congregation) {
-                DB::connection('external')->table('members')->where('congregation_id', $congregation->id)->update(['congregation_id' => null]);
-            }
-            DB::connection('external')->table('congregations')->where('enterprise_id', $id)->delete();
+            DB::connection('external')->table('pre_registrations')->where('enterprise_id', $id)->delete();
+            // ---------------------
+
+            DB::connection('external')->table('pre_registration_config')->where('enterprise_id', $id)->delete();
             // ---------------------
 
             DB::connection('external')->table('members')->where('enterprise_id', $id)->delete();
