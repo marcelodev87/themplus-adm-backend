@@ -2,13 +2,14 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class CheckExpiredEnterprises extends Command
 {
     protected $signature = 'enterprises:check-expired';
+
     protected $description = 'Downgrade enterprises with expired subscription';
 
     public function handle()
@@ -19,8 +20,9 @@ class CheckExpiredEnterprises extends Command
             ->where('name', 'free')
             ->value('id');
 
-        if (!$freeId) {
+        if (! $freeId) {
             $this->error('Plano free não encontrado');
+
             return;
         }
 
@@ -30,7 +32,7 @@ class CheckExpiredEnterprises extends Command
             ->update([
                 'expired_date' => null,
                 'subscription_id' => $freeId,
-                'updated_at' => $now
+                'updated_at' => $now,
             ]);
 
         $this->info("Empresas atualizadas: {$updated}");

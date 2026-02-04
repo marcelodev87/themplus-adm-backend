@@ -143,7 +143,7 @@ class EnterpriseExternalService
             'expired_date' => Carbon::createFromFormat(
                 'd/m/Y',
                 $expired
-            )->format('Y-m-d')
+            )->format('Y-m-d'),
         ];
 
         return $this->repository->update($request->input('id'), $data);
