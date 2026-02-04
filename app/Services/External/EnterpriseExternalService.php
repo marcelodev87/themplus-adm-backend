@@ -11,6 +11,7 @@ use App\Repositories\External\SettingsCounterExternalRepository;
 use App\Repositories\External\SubscriptionExternalRepository;
 use App\Repositories\External\UserExternalRepository;
 use App\Rules\EnterpriseRule;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 class EnterpriseExternalService
@@ -47,7 +48,7 @@ class EnterpriseExternalService
 
     private function createEnterprise($request)
     {
-        $subscription = $this->subscriptionExternalRepository->findByName('free');
+        $expired = $request->input('subscriptionDateExpired');
 
         $data = [
             'name' => $request->input('enterprise.name'),
@@ -60,7 +61,11 @@ class EnterpriseExternalService
             'number_address' => $request->input('enterprise.numberAddress'),
             'complement' => $request->input('enterprise.complement'),
             'phone' => $request->input('enterprise.phone'),
-            'subscription_id' => $subscription->id,
+            'subscription_id' => $request->input('subscription'),
+            'expired_date' => Carbon::createFromFormat(
+                'd/m/Y',
+                $expired
+            )->format('Y-m-d'),
             'cnpj' => $request->input('enterprise.cnpj'),
             'cpf' => $request->input('enterprise.cpf'),
         ];
@@ -118,6 +123,8 @@ class EnterpriseExternalService
             EnterpriseHelper::existsEnterpriseCpfOrCnpj($request);
         }
 
+        $expired = $request->input('subscriptionDateExpired');
+
         $data = [
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -132,6 +139,11 @@ class EnterpriseExternalService
             'complement' => $request->input('complement'),
             'phone' => $request->input('phone'),
             'code_financial' => $request->input('code_financial'),
+            'subscription_id' => $request->input('subscription'),
+            'expired_date' => Carbon::createFromFormat(
+                'd/m/Y',
+                $expired
+            )->format('Y-m-d')
         ];
 
         return $this->repository->update($request->input('id'), $data);

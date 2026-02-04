@@ -33,6 +33,7 @@ class EnterpriseExternal extends Model
         'counter_enterprise_id',
         'code_financial',
         'coupon_id',
+        'expired_date'
     ];
 
     public function subscription()
