@@ -140,6 +140,17 @@ class EnterpriseExternalRepository
             $db->table('cell_members')->whereIn('cell_id', $cellIds)->delete();
         }
 
+        if ($this->hasTable('members')) {
+            $membersIds = $db->table('members')->where('enterprise_id', $enterpriseId)->get();
+            foreach ($membersIds as $mb) {
+                if($mb->image_url){
+                    $path = str_replace(env('AWS_URL').'/', '', $mb->image_url);
+                    Storage::disk('s3')->delete($path);
+                }
+            }
+            $db->table('members')->where('enterprise_id', $membersIds)->delete();
+        }
+
         if ($this->hasTable('ministries') && $this->hasTable('ministry_members')) {
             $ids = $db->table('ministries')->where('enterprise_id', $enterpriseId)->pluck('id');
             $db->table('ministry_members')->whereIn('ministry_id', $ids)->delete();
