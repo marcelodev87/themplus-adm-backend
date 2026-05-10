@@ -4,7 +4,7 @@ namespace App\Services\Internal;
 
 use App\Helpers\UserHelper;
 use App\Jobs\SendResetPasswordEmail;
-use App\Models\PasswordResetToken;
+use App\Models\Internal\PasswordReset;
 use App\Repositories\Internal\UserRepository;
 use App\Rules\UserRule;
 use Illuminate\Support\Facades\Hash;
@@ -76,7 +76,7 @@ class UserService
     public function verify($request)
     {
         $this->rule->verify($request);
-        $reset = PasswordResetToken::where('email', $request->input('email'))->first();
+        $reset = PasswordReset::where('email', $request->input('email'))->first();
 
         if ($reset && $reset->code === $request->input('code')) {
             return ['valid' => true, 'message' => 'Código verificado com sucesso'];
@@ -93,7 +93,7 @@ class UserService
 
         $result = $this->repository->resetPassword($request->input('email'), $data);
 
-        $register = PasswordResetToken::where('email', $request->input('email'))->first();
+        $register = PasswordReset::where('email', $request->input('email'))->first();
         if ($register) {
             $register->delete();
         }

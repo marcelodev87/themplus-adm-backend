@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\ResetPasswordMail;
-use App\Models\PasswordResetToken;
+use App\Models\Internal\PasswordReset;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -29,7 +29,7 @@ class SendResetPasswordEmail implements ShouldQueue
     {
         $code = random_int(10000000, 99999999);
 
-        PasswordResetToken::updateOrCreate(
+        PasswordReset::updateOrCreate(
             ['email' => $this->user->email],
             ['code' => $code]
         );
