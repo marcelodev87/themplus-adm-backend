@@ -46,8 +46,32 @@ class EnterpriseExternalService
 
     }
 
+    private function assertSubscriptionMatchesPosition($position, $subscriptionId)
+    {
+        $subscription = $this->subscriptionExternalRepository->findById($subscriptionId);
+
+        if (! $subscription) {
+            throw new \Exception('Assinatura selecionada não existe');
+        }
+
+        $isCounter = $position !== 'client';
+
+        if ($isCounter && $subscription->type !== 'counter' && $subscription->name !== 'free') {
+            throw new \Exception('Organizações de contador só podem receber planos de contador (C5/C10/CIlimited) ou o plano free');
+        }
+
+        if (! $isCounter && $subscription->type !== 'client') {
+            throw new \Exception('Organizações de cliente só podem receber planos de cliente');
+        }
+    }
+
     private function createEnterprise($request)
     {
+        $this->assertSubscriptionMatchesPosition(
+            $request->input('enterprise.position'),
+            $request->input('subscription')
+        );
+
         $expired = $request->input('subscriptionDateExpired');
 
         $data = [
@@ -122,6 +146,8 @@ class EnterpriseExternalService
         if (($request->input('cpf') && $request->input('cpf') !== $enterprise->cpf) || $request->input('cnpj') && $request->input('cnpj') !== $enterprise->cnpj) {
             EnterpriseHelper::existsEnterpriseCpfOrCnpj($request);
         }
+
+        $this->assertSubscriptionMatchesPosition($enterprise->position, $request->input('subscription'));
 
         $expired = $request->input('subscriptionDateExpired');
 

@@ -20,6 +20,8 @@ class SubscriptionTableResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'price' => $this->price,
+            'type' => $this->type,
+            'client_limit' => $this->client_limit,
             'enterprises_using' => $using,
         ];
     }

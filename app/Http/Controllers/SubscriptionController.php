@@ -40,6 +40,7 @@ class SubscriptionController
             $rules = [
                 'id' => 'required|string',
                 'price' => 'required|numeric',
+                'client_limit' => 'nullable|integer|min:1',
             ];
 
             $messages = [
@@ -47,9 +48,11 @@ class SubscriptionController
                 'id.string' => 'O ID do cupom deve ser uma string',
                 'price.required' => 'O preço é obrigatório',
                 'price.numeric' => 'O preço deve ser um número válido',
+                'client_limit.integer' => 'A quantidade de licenças deve ser um número inteiro',
+                'client_limit.min' => 'A quantidade de licenças deve ser maior que zero',
             ];
 
-            $validator = Validator::make($request->only(['id', 'price']), $rules, $messages);
+            $validator = Validator::make($request->only(['id', 'price', 'client_limit']), $rules, $messages);
 
             if ($validator->fails()) {
                 throw new ValidationException($validator, response()->json(['errors' => $validator->errors()], 422));
@@ -58,6 +61,9 @@ class SubscriptionController
             DB::beginTransaction();
 
             $data = ['price' => $request->input('price')];
+            if ($request->has('client_limit')) {
+                $data['client_limit'] = $request->input('client_limit');
+            }
             $subscription = $this->repository->update($request->input('id'), $data);
 
             if ($subscription) {

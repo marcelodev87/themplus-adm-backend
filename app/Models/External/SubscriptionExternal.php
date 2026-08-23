@@ -16,5 +16,6 @@ class SubscriptionExternal extends Model
 
     protected $fillable = [
         'price',
+        'client_limit',
     ];
 }
